@@ -12,8 +12,8 @@ body {
 
 .container {
     display: flex;
-    width: 900px;
-    height: 600px;
+    width: 1000px;
+    height: 480px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
@@ -69,10 +69,11 @@ body {
     border: 1px solid #ddd;
 }
 
-.input-group label .icon {
-    font-size: 1.2em;
+.input-icon {
+     width: 20px; 
+    height: 20px;
     margin-right: 10px;
-    color: #666;
+    
 }
 
 .input-group input {

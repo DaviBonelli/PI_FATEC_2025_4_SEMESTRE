@@ -17,13 +17,13 @@
                 <form action="login.php" method="POST">
                     <div class="input-group">
                         <label for="usuario">
-                            <span class="icon">👤</span>
+                            <img src="../Imagens/perfil.png" alt="Ícone de usuário" class="input-icon">
                             <input type="text" id="usuario" name="usuario" placeholder="Usuário">
                         </label>
                     </div>
                     <div class="input-group">
                         <label for="senha">
-                            <span class="icon">🔒</span>
+                            <img src="../Imagens/trancar.png" alt="Ícone de senha" class="input-icon">
                             <input type="password" id="senha" name="senha" placeholder="Senha">
                         </label>
                     </div>
