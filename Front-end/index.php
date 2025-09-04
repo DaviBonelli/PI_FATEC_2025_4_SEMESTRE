@@ -9,7 +9,8 @@
 <body>
     <div class="container">
         <div class="illustration-panel">
-            <img src="../Imagens/inicio.png" alt="Ilustração">
+            <img src="../Imagens/logo.png" alt="Ilustração1">
+            <img src="../Imagens/inicio.png" alt="Ilustração2">
         </div>
         <div class="login-panel">
             <div class="login-form">
