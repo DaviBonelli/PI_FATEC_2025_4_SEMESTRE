@@ -1,10 +1,10 @@
 # 📌 PI_FATEC_2025_4_SEMESTRE
-# Projeto: BlueDev - Sistema de Lembretes Corretivos e Preventivos
+# Projeto: BlueDev - Sistema de Lembretes 
 # Descrição
 
 O BlueDev é uma aplicação web desenvolvida com o objetivo de facilitar a gestão de alertas corretivos e preventivos dentro das organizações. A plataforma permite que funcionários registrem ocorrências de maneira simples e eficiente, enquanto os administradores podem acompanhar, validar e confirmar as ações realizadas.
 
-Com foco na agilidade, organização e rastreabilidade, o sistema contribui para a melhoria contínua dos processos internos da empresa.
+Com foco na agilidade e organização o sistema contribui para a melhoria contínua dos processos internos da empresa.
 
 
 # Tecnologias Utilizadas
@@ -15,9 +15,9 @@ PHP – para o desenvolvimento do backend e lógica de negócios.
 
 JavaScript – para funcionalidades dinâmicas no frontend.
 
-HTML5 – estruturação das páginas.
+HTML – estruturação das páginas.
 
-CSS3 – estilização e layout da interface.
+CSS – estilização e layout da interface.
 
 
 # Público-alvo
