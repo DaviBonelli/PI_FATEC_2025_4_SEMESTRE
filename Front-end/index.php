@@ -15,17 +15,17 @@
         <div class="login-panel">
             <div class="login-form">
                 <h2>Login</h2>
-                <form action="login.php" method="POST">
+                <form action="inicial_adm.php" method="POST">
                     <div class="input-group">
                         <label for="usuario">
                             <img src="../Imagens/perfil.png" alt="Ícone de usuário" class="input-icon">
-                            <input type="text" id="usuario" name="usuario" placeholder="Usuário">
+                            <input type="text" id="usuario" name="usuario" placeholder="Usuário" required>
                         </label>
                     </div>
                     <div class="input-group">
                         <label for="senha">
                             <img src="../Imagens/trancar.png" alt="Ícone de senha" class="input-icon">
-                            <input type="password" id="senha" name="senha" placeholder="Senha">
+                            <input type="password" id="senha" name="senha" placeholder="Senha" required>
                         </label>
                     </div>
                     <p class="help-link">Precisa de ajuda?</p>

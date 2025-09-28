@@ -10,11 +10,11 @@
     <div class="container">
         <aside class="sidebar">
             <ul>
-                <li><img src="..." alt="Ocorrências"> Ocorrências</li>
-                <li><img src="..." alt="Fornecedores"> Fornecedores</li>
-                <li><img src="..." alt="Funcionários"> Funcionários</li>
-                <li><img src="..." alt="Relatórios"> Relatórios</li>
-                <li><img src="..." alt="Máquinas"> Máquinas</li>
+                <li><img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências</li>
+                <li><img src="../Imagens/fornecedores_icone.png" alt="Fornecedores"> Fornecedores</li>
+                <li><img src="../Imagens/func_icone.png" alt="Funcionários"> Funcionários</li>
+                <li><img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios</li>
+                <li><img src="../Imagens/maquina_icone.png" alt="Máquinas"> Máquinas</li>
             </ul>
         </aside>
 
