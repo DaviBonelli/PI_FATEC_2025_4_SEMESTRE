@@ -1,20 +1,16 @@
 <?php
 session_start();
 
-$conn = mysqli_connect("localhost", "root", "", "eventos");
-
-if (!$conn) {
-    die("Erro na conexão: " . mysqli_connect_error());
-}
+$usuarios = [
+    'ADM'  => '1234',
+    'FUNC' => '123'
+];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usuario = $_POST['usuario'];
+    $usuario = strtoupper($_POST['usuario']); 
     $senha   = $_POST['senha'];
 
-    $sql = "SELECT * FROM usuarios WHERE usuario='$usuario' AND senha='$senha' LIMIT 1";
-    $result = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($result) == 1) {
+    if (isset($usuarios[$usuario]) && $usuarios[$usuario] === $senha) {
         $_SESSION['loggedin'] = true;
         $_SESSION['usuario'] = $usuario;
 
@@ -24,11 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } elseif ($usuario === "FUNC") {
             header("Location: inicial_func.php");
             exit();
-        } else {
-            header("Location: index.html");
-            exit();
         }
-
     } else {
         echo "Usuário ou senha inválidos.";
     }

@@ -15,7 +15,7 @@
         <div class="login-panel">
             <div class="login-form">
                 <h2>Login</h2>
-                <form action="inicial_adm.php" method="POST">
+                <form action="login.php" method="POST">
                     <div class="input-group">
                         <label for="usuario">
                             <img src="../Imagens/perfil.png" alt="Ícone de usuário" class="input-icon">

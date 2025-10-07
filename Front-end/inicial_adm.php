@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
+    <title>Página Inicial Administrador</title>
     <style>
         * {
             margin: 0;
@@ -50,7 +50,7 @@
         }
 
         .sidebar li:hover {
-            color: #d32f2f;
+            color: #291aadff;
             transform: translateX(5px);
         }
 
