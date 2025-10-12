@@ -8,10 +8,10 @@
 </head>
 <body>
     <div class="navbar">
-        <button class="logout-icon">
-            <img src="../Imagens/icone_sair.png" alt="Sair">
-        </button>
-    </div>
+    <a href="index.php" class="logout-icon">
+        <img src="../Imagens/icone_sair.png" alt="Sair">
+    </a>
+</div>
     <div class="container">
         <aside class="sidebar">
             <ul>
