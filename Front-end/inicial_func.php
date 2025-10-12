@@ -80,7 +80,7 @@
     <div class="container">
         <aside class="sidebar">
             <ul>
-                <li><img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências</li>
+                <li><img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências</li><br>
                 <li><img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios</li>
             </ul>
         </aside>
