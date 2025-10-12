@@ -13,13 +13,20 @@
     </a>
 </div>
     <div class="container">
-        <aside class="sidebar">
-            <ul>
-                <li><img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências</li><br>
-                <li><img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios</li>
-            </ul>
-        </aside>
-
+      <aside class="sidebar">
+    <ul>
+        <li>
+            <a href="ocorrencias.html">
+                <img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências
+            </a>
+        </li>
+        <li>
+            <a href="relatorios.html">
+                <img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios
+            </a>
+        </li>
+    </ul>
+</aside>
         <main class="main-content">
             <h1>SEJA BEM-VINDO!</h1>
             <img src="../Imagens/logo_cliente.jpeg" alt="Logo Arearty" class="logo">
