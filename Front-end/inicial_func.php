@@ -16,12 +16,12 @@
       <aside class="sidebar">
     <ul>
         <li>
-            <a href="ocorrencias.html">
+            <a href="ocorrencias.php">
                 <img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências
             </a>
         </li>
         <li>
-            <a href="relatorios.html">
+            <a href="relatorios.php">
                 <img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios
             </a>
         </li>
