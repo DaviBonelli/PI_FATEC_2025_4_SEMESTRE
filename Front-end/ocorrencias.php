@@ -62,18 +62,18 @@ try {
                             </div>
                             <div class="acoes">
                                 <a href="editar_ocorrencia.php?id=<?= $oc['id'] ?>">
-                                    <img src="../Imagens/icone_editar.png" alt="Editar">
+                                    <img src="../Imagens/editar.png" alt="Editar">
                                 </a>
                                 <a href="ver_ocorrencia.php?id=<?= $oc['id'] ?>">
-                                    <img src="../Imagens/icone_vermais.png" alt="Ver Mais">
+                                    <img src="../Imagens/visualizar.png" alt="Ver Mais">
                                 </a>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <div class="sem-ocorrencias">
-                        <p>Não há ocorrências no momento.</p>
-                        <img src="../Imagens/sem-ocorrencia.png" alt="Sem ocorrências">
+                        <p>Nenhum resultado disponível no momento.</p>
+                        <img src="../Imagens/nada_encontrado.png" alt="Sem ocorrências">
                     </div>
                 <?php endif; ?>
             </div>
