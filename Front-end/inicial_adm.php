@@ -1,3 +1,10 @@
+<?php
+session_start();
+$_SESSION['usuario_id'] = 1;
+
+require 'bd.php'; 
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
