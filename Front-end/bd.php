@@ -1,14 +1,15 @@
 <?php
 $host = "localhost";
-$dbname = "eventos";
+$dbname = "bluedev";
 $user = "root";
 $pass = "";
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+    $pdo = new PDO("mysql:host=$host;charset=utf8", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->exec("CREATE DATABASE IF NOT EXISTS $dbname CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+    $pdo->exec("USE $dbname");
 
-    
     $pdo->exec("CREATE TABLE IF NOT EXISTS usuarios (
         id INT AUTO_INCREMENT PRIMARY KEY,
         usuario VARCHAR(50) NOT NULL UNIQUE,
@@ -16,7 +17,7 @@ try {
     )");
 
     $usuarios = [
-        ['usuario' => 'ADM', 'senha' => '123'],
+        ['usuario' => 'ADM', 'senha' => '1234'],
         ['usuario' => 'FUNC', 'senha' => '123']
     ];
 
@@ -29,7 +30,19 @@ try {
         }
     }
 
+    $pdo->exec("CREATE TABLE IF NOT EXISTS ocorrencias (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        usuario_id INT NOT NULL,
+        titulo VARCHAR(100) NOT NULL,
+        tipo VARCHAR(50) NOT NULL,
+        status VARCHAR(50) NOT NULL,
+        descricao TEXT,
+        data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    )");
+
+
 } catch (PDOException $e) {
-    die("Erro ao conectar ou criar tabela no MySQL: " . $e->getMessage());
+    die("Erro ao conectar ou criar banco/tabelas no MySQL: " . $e->getMessage());
 }
 ?>
