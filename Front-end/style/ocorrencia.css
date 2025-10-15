@@ -215,3 +215,28 @@ body {
     max-width: 250px;
     height: auto;
 }
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.logo-cliente {
+    width: 130px; 
+    height: auto;
+    object-fit: contain;
+}
+
+.logout-icon img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.logout-icon img:hover {
+    transform: scale(1.1);
+}

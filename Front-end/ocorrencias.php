@@ -21,12 +21,13 @@ try {
     <link rel="stylesheet" href="style/ocorrencia.css">
 </head>
 <body>
-    <div class="navbar">
-        <a href="index.php" class="logout-icon">
-            <img src="../Imagens/icone_sair.png" alt="Sair">
-        </a>
-    </div>
-
+   <div class="navbar">
+    <img src="../Imagens/logo_cliente.jpeg" alt="Logo Cliente" class="logo-cliente">
+    
+    <a href="index.php" class="logout-icon">
+        <img src="../Imagens/icone_sair.png" alt="Sair">
+    </a>
+</div>
     <div class="container">
         <aside class="sidebar">
             <ul>
