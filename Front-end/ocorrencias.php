@@ -1,13 +1,21 @@
 <?php
 session_start();
-require 'bd.php'; 
+require 'bd.php';
 
+$tipo_usuario = $_SESSION['tipo_usuario'] ?? ''; 
+$usuario_id   = $_SESSION['usuario_id'] ?? 0;
 
 try {
-    $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE usuario_id = :usuario_id ORDER BY id DESC");
-    $stmt->bindValue(':usuario_id', $_SESSION['usuario_id'], PDO::PARAM_INT);
+    if ($tipo_usuario === 'ADM') {
+        $stmt = $pdo->prepare("SELECT * FROM ocorrencias ORDER BY id DESC");
+    } else {
+        $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE usuario_id = :usuario_id ORDER BY id DESC");
+        $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
+    }
+
     $stmt->execute();
     $ocorrencias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
     die("Erro ao buscar ocorrências: " . $e->getMessage());
 }
@@ -17,25 +25,27 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Ocorrências ADM</title>
+    <title>Página Ocorrências</title>
     <link rel="stylesheet" href="style/ocorrencia.css">
 </head>
 <body>
    <div class="navbar">
-    <img src="../Imagens/logo_cliente.jpeg" alt="Logo Cliente" class="logo-cliente">
-    
-    <a href="index.php" class="logout-icon">
-        <img src="../Imagens/icone_sair.png" alt="Sair">
-    </a>
-</div>
+        <img src="../Imagens/logo_cliente.jpeg" alt="Logo Cliente" class="logo-cliente">
+        <a href="index.php" class="logout-icon">
+            <img src="../Imagens/icone_sair.png" alt="Sair">
+        </a>
+    </div>
+
     <div class="container">
         <aside class="sidebar">
             <ul>
                 <li><a href="ocorrencias.php"><img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências</a></li>
-                <li><a href="fornecedores.php"><img src="../Imagens/fornecedor_icone.png" alt="Fornecedores"> Fornecedores</a></li>
-                <li><a href="funcionarios.php"><img src="../Imagens/func_icone.png" alt="Funcionários"> Funcionários</a></li>
+                <?php if ($tipo_usuario === 'ADM'): ?>
+                    <li><a href="fornecedores.php"><img src="../Imagens/fornecedor_icone.png" alt="Fornecedores"> Fornecedores</a></li>
+                    <li><a href="funcionarios.php"><img src="../Imagens/func_icone.png" alt="Funcionários"> Funcionários</a></li>
+                    <li><a href="maquinas.php"><img src="../Imagens/maquina_icone.png" alt="Máquinas"> Máquinas</a></li>
+                <?php endif; ?>
                 <li><a href="relatorios.php"><img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios</a></li>
-                <li><a href="maquinas.php"><img src="../Imagens/maquina_icone.png" alt="Máquinas"> Máquinas</a></li>
             </ul>
         </aside>
 
