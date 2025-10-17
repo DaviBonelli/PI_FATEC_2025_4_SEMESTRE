@@ -71,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="status">Status</label>
                 <select id="status" name="status" required>
                     <option value="" disabled selected>Pendente</option>
+                    <option value="Pendente">Pendente</option>
                 </select>
 
                 <label for="descricao">Descrição</label>
