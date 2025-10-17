@@ -2,6 +2,30 @@
 session_start();
 require 'bd.php';
 
+$usuario_id = $_SESSION['usuario_id'] ?? 0;
+$id = $_GET['id'] ?? null;
+$modo = $id ? 'editar' : 'adicionar';
+$dados = [
+    'titulo' => '',
+    'tipo' => '',
+    'status' => '',
+    'descricao' => ''
+];
+
+if ($id) {
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        $dados = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$dados) {
+            die("Ocorrência não encontrada.");
+        }
+    } catch (PDOException $e) {
+        die("Erro ao buscar ocorrência: " . $e->getMessage());
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titulo = $_POST['titulo'] ?? '';
     $tipo = $_POST['tipo'] ?? '';
@@ -9,19 +33,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $descricao = $_POST['descricao'] ?? '';
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO ocorrencias (usuario_id, titulo, tipo, status, descricao) 
-                               VALUES (:usuario_id, :titulo, :tipo, :status, :descricao)");
-        $stmt->execute([
-            ':usuario_id' => $_SESSION['usuario_id'],
-            ':titulo' => $titulo,
-            ':tipo' => $tipo,
-            ':status' => $status,
-            ':descricao' => $descricao
-        ]);
-        header('Location: ocorrencias.php'); 
+        if ($id) {
+            $stmt = $pdo->prepare("UPDATE ocorrencias 
+                                   SET titulo = :titulo, tipo = :tipo, status = :status, descricao = :descricao
+                                   WHERE id = :id");
+            $stmt->execute([
+                ':titulo' => $titulo,
+                ':tipo' => $tipo,
+                ':status' => $status,
+                ':descricao' => $descricao,
+                ':id' => $id
+            ]);
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO ocorrencias (usuario_id, titulo, tipo, status, descricao) 
+                                   VALUES (:usuario_id, :titulo, :tipo, :status, :descricao)");
+            $stmt->execute([
+                ':usuario_id' => $usuario_id,
+                ':titulo' => $titulo,
+                ':tipo' => $tipo,
+                ':status' => $status,
+                ':descricao' => $descricao
+            ]);
+        }
+
+        header('Location: ocorrencias.php');
         exit();
     } catch (PDOException $e) {
-        die("Erro ao adicionar ocorrência: " . $e->getMessage());
+        die("Erro ao salvar ocorrência: " . $e->getMessage());
     }
 }
 ?>
@@ -30,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adicionar Ocorrência</title>
+    <title><?= $modo === 'editar' ? 'Editar' : 'Adicionar' ?> Ocorrência</title>
     <link rel="stylesheet" href="style/ocorrencia.css">
 </head>
 <body>
@@ -54,30 +92,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <main class="main-content">
             <div class="titulo-pagina">
-                <h2>ADICIONAR OCORRÊNCIA</h2>
+                <h2><?= strtoupper($modo) ?> OCORRÊNCIA</h2>
             </div>
 
             <form method="POST" class="form-ocorrencia">
                 <label for="titulo">Título da ocorrência</label>
-                <input type="text" id="titulo" name="titulo" placeholder="Digite o título" required>
+                <input type="text" id="titulo" name="titulo" placeholder="Digite o título" required
+                       value="<?= htmlspecialchars($dados['titulo']) ?>">
 
                 <label for="tipo">Tipo de manutenção</label>
                 <select id="tipo" name="tipo" required>
-                    <option value="" disabled selected>Preventiva / Corretiva</option>
-                    <option value="Preventiva">Preventiva</option>
-                    <option value="Corretiva">Corretiva</option>
+                    <option value="" disabled <?= $dados['tipo'] == '' ? 'selected' : '' ?>>Preventiva / Corretiva</option>
+                    <option value="Preventiva" <?= $dados['tipo'] == 'Preventiva' ? 'selected' : '' ?>>Preventiva</option>
+                    <option value="Corretiva" <?= $dados['tipo'] == 'Corretiva' ? 'selected' : '' ?>>Corretiva</option>
                 </select>
 
                 <label for="status">Status</label>
                 <select id="status" name="status" required>
-                    <option value="" disabled selected>Pendente</option>
-                    <option value="Pendente">Pendente</option>
+                    <option value="" disabled <?= $dados['status'] == '' ? 'selected' : '' ?>>Selecione</option>
+                    <option value="Pendente" <?= $dados['status'] == 'Pendente' ? 'selected' : '' ?>>Pendente</option>
+                    <option value="Em andamento" <?= $dados['status'] == 'Em andamento' ? 'selected' : '' ?>>Em andamento</option>
+                    <option value="Concluída" <?= $dados['status'] == 'Concluída' ? 'selected' : '' ?>>Concluída</option>
                 </select>
 
                 <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao" rows="4" placeholder="Digite a descrição..."></textarea>
+                <textarea id="descricao" name="descricao" rows="4" placeholder="Digite a descrição..."><?= htmlspecialchars($dados['descricao']) ?></textarea>
 
-                <button type="submit">ADICIONAR</button>
+                <button type="submit"><?= $modo === 'editar' ? 'SALVAR ALTERAÇÕES' : 'ADICIONAR' ?></button>
             </form>
         </main>
     </div>

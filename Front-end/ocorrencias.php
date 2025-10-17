@@ -114,9 +114,10 @@ try {
                                     <?php endif; ?>
                                 </div>
                                 <div class="acoes">
-                                    <a href="editar_ocorrencia.php?id=<?= $oc['id'] ?>">
+                                    <a href="adicionar_ocorrencia.php?id=<?= $oc['id'] ?>">
                                         <img src="../Imagens/editar.png" alt="Editar">
                                     </a>
+                                    <br>
                                     <a href="ver_ocorrencia.php?id=<?= $oc['id'] ?>">
                                         <img src="../Imagens/visualizar.png" alt="Ver Mais">
                                     </a>
