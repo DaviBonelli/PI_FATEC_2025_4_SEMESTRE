@@ -27,6 +27,49 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Ocorrências</title>
     <link rel="stylesheet" href="style/ocorrencia.css">
+    <style>
+        /* Fundo cinza da página */
+        body {
+            background-color: #e0e0e0;
+        }
+
+        /* Botão remover */
+        .btn-remover {
+            align-self: flex-start;
+            background-color: #ffb3b3; /* vermelho claro */
+            border: 1px solid #ff4d4d;
+            border-radius: 20px;
+            padding: 8px 18px;
+            cursor: pointer;
+            color: #fff;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-remover.ativo {
+            background-color: #d90000; /* vermelho escuro */
+            border-color: #b00000;
+        }
+
+        /* Checkboxes escondidos inicialmente */
+        .checkbox-ocorrencia {
+            display: none;
+            margin-right: 10px;
+            transform: scale(1.2);
+            accent-color: #d90000;
+        }
+
+        /* Mostra checkboxes quando modo remoção estiver ativo */
+        .remocao-ativa .checkbox-ocorrencia {
+            display: inline-block;
+        }
+
+        .ocorrencia-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
    <div class="navbar">
@@ -54,41 +97,89 @@ try {
                 <h2>OCORRÊNCIAS</h2>
                 <div class="botoes">
                     <button onclick="window.location.href='adicionar_ocorrencia.php'">ADICIONAR</button>
+                    <button id="btnRemover" type="button" class="btn-remover">REMOVER</button>
                 </div>
             </div>
 
-            <div class="lista-ocorrencias">
-                <?php if (!empty($ocorrencias)): ?>
-                    <?php foreach ($ocorrencias as $oc): ?>
-                        <div class="ocorrencia-card">
-                            <div class="info">
-                                <h3><?= htmlspecialchars($oc['titulo']) ?></h3>
-                                <p><strong>Tipo:</strong> <?= htmlspecialchars($oc['tipo']) ?></p>
-                                <p><strong>Status:</strong> <?= htmlspecialchars($oc['status']) ?></p>
-                                <?php if (!empty($oc['descricao'])): ?>
-                                    <div class="descricao">
-                                        <strong>Descrição:</strong> <?= nl2br(htmlspecialchars($oc['descricao'])) ?>
-                                    </div>
-                                <?php endif; ?>
+            <form id="formRemover" method="POST" action="remover_ocorrencia.php">
+                <div class="lista-ocorrencias">
+                    <?php if (!empty($ocorrencias)): ?>
+                        <?php foreach ($ocorrencias as $oc): ?>
+                            <div class="ocorrencia-card">
+                                <input type="checkbox" name="ocorrencias[]" value="<?= $oc['id'] ?>" class="checkbox-ocorrencia">
+                                <div class="info">
+                                    <h3><?= htmlspecialchars($oc['titulo']) ?></h3>
+                                    <p><strong>Tipo:</strong> <?= htmlspecialchars($oc['tipo']) ?></p>
+                                    <p><strong>Status:</strong> <?= htmlspecialchars($oc['status']) ?></p>
+                                    <?php if (!empty($oc['descricao'])): ?>
+                                        <div class="descricao">
+                                            <strong>Descrição:</strong> <?= nl2br(htmlspecialchars($oc['descricao'])) ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="acoes">
+                                    <a href="editar_ocorrencia.php?id=<?= $oc['id'] ?>">
+                                        <img src="../Imagens/editar.png" alt="Editar">
+                                    </a>
+                                    <a href="ver_ocorrencia.php?id=<?= $oc['id'] ?>">
+                                        <img src="../Imagens/visualizar.png" alt="Ver Mais">
+                                    </a>
+                                </div>
                             </div>
-                            <div class="acoes">
-                                <a href="editar_ocorrencia.php?id=<?= $oc['id'] ?>">
-                                    <img src="../Imagens/editar.png" alt="Editar">
-                                </a>
-                                <a href="ver_ocorrencia.php?id=<?= $oc['id'] ?>">
-                                    <img src="../Imagens/visualizar.png" alt="Ver Mais">
-                                </a>
-                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="sem-ocorrencias">
+                            <p>Nenhum resultado disponível no momento.</p>
+                            <img src="../Imagens/nada_encontrado.png" alt="Sem ocorrências">
                         </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <div class="sem-ocorrencias">
-                        <p>Nenhum resultado disponível no momento.</p>
-                        <img src="../Imagens/nada_encontrado.png" alt="Sem ocorrências">
-                    </div>
-                <?php endif; ?>
-            </div>
+                    <?php endif; ?>
+                </div>
+            </form>
         </main>
     </div>
+
+    <script>
+        const btnRemover = document.getElementById('btnRemover');
+        const formRemover = document.getElementById('formRemover');
+        let modoRemover = false;
+
+        btnRemover.addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('.checkbox-ocorrencia');
+
+            // Ativar modo seleção
+            if (!modoRemover) {
+                modoRemover = true;
+                document.body.classList.add('remocao-ativa');
+                btnRemover.classList.add('ativo');
+                btnRemover.textContent = 'CONFIRMAR REMOÇÃO';
+                return;
+            }
+
+            // Coletar selecionados
+            const selecionados = Array.from(checkboxes).filter(c => c.checked);
+
+            if (selecionados.length === 0) {
+                alert('Selecione pelo menos uma ocorrência para remover.');
+                return;
+            }
+
+            // Confirma exclusão
+            if (confirm('Tem certeza que deseja excluir as ocorrências selecionadas?')) {
+                formRemover.submit();
+            }
+        });
+
+        // Escurece o botão automaticamente se houver algum checkbox marcado
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('checkbox-ocorrencia')) {
+                const algumMarcado = Array.from(document.querySelectorAll('.checkbox-ocorrencia')).some(c => c.checked);
+                if (algumMarcado) {
+                    btnRemover.classList.add('ativo');
+                } else {
+                    btnRemover.classList.remove('ativo');
+                }
+            }
+        });
+    </script>
 </body>
 </html>

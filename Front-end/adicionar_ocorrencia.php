@@ -69,7 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
 
                 <label for="status">Status</label>
-                <input type="text" id="status" name="status" placeholder="Digite o status" required>
+                <select id="status" name="status" required>
+                    <option value="" disabled selected>Pendente</option>
+                </select>
 
                 <label for="descricao">Descrição</label>
                 <textarea id="descricao" name="descricao" rows="4" placeholder="Digite a descrição..."></textarea>
