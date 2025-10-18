@@ -70,7 +70,7 @@ BlueDev/
 └─ README.md
 ````
 
-###📌 **Status do Projeto**
+### 📌 **Status do Projeto**
 
 Em desenvolvimento
 
