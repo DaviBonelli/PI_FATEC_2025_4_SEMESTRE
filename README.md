@@ -74,4 +74,4 @@ BlueDev/
 
 Em desenvolvimento
 
-Fase atual: implementação de cadastro, edição, remoção e modal de visualização de ocorrências.
+Fase atual do projeto: implementação de cadastro, edição, remoção e modal de visualização de ocorrências.
