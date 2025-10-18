@@ -1,42 +1,91 @@
-# 📌 PI_FATEC_2025_4_SEMESTRE
-# Projeto: BlueDev - Sistema de Lembretes 
+📌 PI_FATEC_2025_4_SEMESTRE
+BlueDev – Sistema de Lembretes e Ocorrências
+
+
 # Descrição
 
-O BlueDev é uma aplicação web desenvolvida com o objetivo de facilitar a gestão de alertas corretivos e preventivos dentro das organizações. A plataforma permite que funcionários registrem ocorrências de maneira simples e eficiente, enquanto os administradores podem acompanhar, validar e confirmar as ações realizadas.
+O BlueDev é uma aplicação web para gestão de alertas corretivos e preventivos em empresas.
 
-Com foco na agilidade e organização o sistema contribui para a melhoria contínua dos processos internos da empresa.
+Funcionalidades principais:
+
+Registro de ocorrências pelos funcionários.
+
+Visualização detalhada das ocorrências em modal interativo, sem sair da página.
+
+Administração e acompanhamento das ocorrências por gestores, incluindo validação, edição e exclusão.
+
+Remoção em lote com confirmação de segurança.
+
+O sistema contribui para agilidade, organização e rastreabilidade dos processos internos da empresa.
 
 
 # Tecnologias Utilizadas
 
-O projeto será desenvolvido utilizando as seguintes tecnologias:
+PHP – Backend e lógica de negócios.
 
-PHP – para o desenvolvimento do backend e lógica de negócios.
+JavaScript (ES6) – Funcionalidades dinâmicas e modais.
 
-JavaScript – para funcionalidades dinâmicas no frontend.
+HTML5 – Estrutura das páginas.
 
-HTML – estruturação das páginas.
+CSS3 – Layout responsivo e estilização.
 
-CSS – estilização e layout da interface.
+
+# Funcionalidades
+
+Cadastro, edição e remoção de ocorrências.
+
+Modal para visualização completa da ocorrência.
+
+Diferenciação de acesso entre administradores e usuários comuns.
+
+Interface responsiva e amigável.
 
 
 # Público-alvo
 
-Funcionários de empresas (registro de alertas e ocorrências).
+Funcionários – registram alertas e ocorrências.
 
-Administradores e gestores (validação e acompanhamento das ações).
+Administradores/Gestores – validam, acompanham e rastreiam ações corretivas e preventivas.
 
 
 # Objetivos do Projeto
 
-Otimizar a comunicação de problemas internos nas empresas.
+Melhorar a comunicação de problemas internos.
 
-Melhorar a eficiência na resolução de ocorrências.
+Aumentar a eficiência na resolução de ocorrências.
 
-Garantir controle e rastreabilidade das ações corretivas e preventivas.
+Garantir rastreabilidade e histórico completo das ações.
+
+Oferecer interface interativa com modais para maior usabilidade.
+
+
+# Instalação
+
+Clone este repositório:
+
+git clone https://github.com/seu-usuario/BlueDev.git
+
+
+Configure o servidor PHP (XAMPP, WAMP ou similar).
+
+Importe o banco de dados MySQL fornecido (bd.sql).
+
+Ajuste as credenciais do banco em bd.php.
+
+Acesse http://localhost/BlueDev/ocorrencias.php.
+
+📂 Estrutura de Arquivos
+BlueDev/
+├─ style/ocorrencia.css
+├─ Imagens/
+├─ ocorrencias.php
+├─ adicionar_ocorrencia.php
+├─ remover_ocorrencia.php
+├─ bd.php
+└─ README.md
 
 
 # 📌 Status do Projeto
 
 Em desenvolvimento
-Fase atual: definição da estrutura do sistema e construção dos módulos principais.
+Fase atual: implementação de cadastro, edição, remoção e modal de visualização de ocorrências.
