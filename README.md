@@ -1,8 +1,8 @@
-📌 PI_FATEC_2025_4_SEMESTRE
+# 📌 PI_FATEC_2025_4_SEMESTRE
 BlueDev – Sistema de Lembretes e Ocorrências
 
 
-# Descrição
+**Descrição**
 
 O BlueDev é uma aplicação web para gestão de alertas corretivos e preventivos em empresas.
 
@@ -19,7 +19,7 @@ Remoção em lote com confirmação de segurança.
 O sistema contribui para agilidade, organização e rastreabilidade dos processos internos da empresa.
 
 
-# Tecnologias Utilizadas
+**Tecnologias Utilizadas**
 
 PHP – Backend e lógica de negócios.
 
@@ -30,7 +30,7 @@ HTML5 – Estrutura das páginas.
 CSS3 – Layout responsivo e estilização.
 
 
-# Funcionalidades
+**Funcionalidades**
 
 Cadastro, edição e remoção de ocorrências.
 
@@ -41,14 +41,14 @@ Diferenciação de acesso entre administradores e usuários comuns.
 Interface responsiva e amigável.
 
 
-# Público-alvo
+**Público-alvo**
 
 Funcionários – registram alertas e ocorrências.
 
 Administradores/Gestores – validam, acompanham e rastreiam ações corretivas e preventivas.
 
 
-# Objetivos do Projeto
+**Objetivos do Projeto**
 
 Melhorar a comunicação de problemas internos.
 
@@ -59,7 +59,7 @@ Garantir rastreabilidade e histórico completo das ações.
 Oferecer interface interativa com modais para maior usabilidade.
 
 
-# Instalação
+**Instalação**
 
 Clone este repositório:
 
