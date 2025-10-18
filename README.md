@@ -68,7 +68,7 @@ BlueDev/
 ├─ remover_ocorrencia.php
 ├─ bd.php
 └─ README.md
-
+---
 
 ###📌 **Status do Projeto**
 
