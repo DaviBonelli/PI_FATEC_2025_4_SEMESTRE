@@ -54,7 +54,9 @@ try {
             <h2>OCORRÊNCIAS</h2>
             <div class="botoes">
                 <button onclick="window.location.href='adicionar_ocorrencia.php'">ADICIONAR</button>
-                <button id="btnRemover" type="button" class="btn-remover">REMOVER</button>
+                <?php if ($tipo_usuario === 'ADM'): ?>
+                    <button id="btnRemover" type="button" class="btn-remover">REMOVER</button>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -63,7 +65,9 @@ try {
                 <?php if (!empty($ocorrencias)): ?>
                     <?php foreach ($ocorrencias as $oc): ?>
                         <div class="ocorrencia-card">
-                            <input type="checkbox" name="ocorrencias[]" value="<?= $oc['id'] ?>" class="checkbox-ocorrencia">
+                            <?php if ($tipo_usuario === 'ADM'): ?>
+                                <input type="checkbox" name="ocorrencias[]" value="<?= $oc['id'] ?>" class="checkbox-ocorrencia">
+                            <?php endif; ?>
                             <div class="info">
                                 <h3><?= htmlspecialchars($oc['titulo']) ?></h3>
                                 <p><strong>Tipo:</strong> <?= htmlspecialchars($oc['tipo']) ?></p>
@@ -118,6 +122,45 @@ try {
 </div>
 
 <script>
+const modal = document.getElementById('modalOcorrencia');
+const fechar = document.querySelector('.fechar');
+const btnEditar = document.getElementById('btnEditar');
+
+function abrirModal(ocorrencia) {
+    document.getElementById('modalTitulo').textContent = ocorrencia.titulo;
+    document.getElementById('modalTipo').textContent = ocorrencia.tipo;
+    document.getElementById('modalStatus').textContent = ocorrencia.status;
+    document.getElementById('modalDescricao').innerHTML = 
+        ocorrencia.descricao ? `<strong>Descrição:</strong><br>${ocorrencia.descricao}` : '';
+    
+    btnEditar.onclick = () => window.location.href = `adicionar_ocorrencia.php?id=${ocorrencia.id}`;
+    modal.style.display = 'flex';
+}
+
+function fecharModal() {
+    modal.style.display = 'none';
+}
+
+fechar.onclick = fecharModal;
+window.onclick = e => { if (e.target === modal) fecharModal(); };
+
+document.querySelectorAll('.acoes a.ver-mais').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault();
+        const ocorrencia = {
+            id: btn.dataset.id,
+            titulo: btn.dataset.titulo,
+            tipo: btn.dataset.tipo,
+            status: btn.dataset.status,
+            descricao: btn.dataset.descricao
+        };
+        abrirModal(ocorrencia);
+    });
+});
+</script>
+
+<?php if ($tipo_usuario === 'ADM'): ?>
+<script>
 const btnRemover = document.getElementById('btnRemover');
 const formRemover = document.getElementById('formRemover');
 let modoRemover = false;
@@ -155,42 +198,7 @@ document.addEventListener('change', (e) => {
         }
     }
 });
-
-const modal = document.getElementById('modalOcorrencia');
-const fechar = document.querySelector('.fechar');
-const btnEditar = document.getElementById('btnEditar');
-
-function abrirModal(ocorrencia) {
-    document.getElementById('modalTitulo').textContent = ocorrencia.titulo;
-    document.getElementById('modalTipo').textContent = ocorrencia.tipo;
-    document.getElementById('modalStatus').textContent = ocorrencia.status;
-    document.getElementById('modalDescricao').innerHTML = 
-        ocorrencia.descricao ? `<strong>Descrição:</strong><br>${ocorrencia.descricao}` : '';
-    
-    btnEditar.onclick = () => window.location.href = `adicionar_ocorrencia.php?id=${ocorrencia.id}`;
-    modal.style.display = 'flex';
-}
-
-function fecharModal() {
-    modal.style.display = 'none';
-}
-
-fechar.onclick = fecharModal;
-window.onclick = e => { if (e.target === modal) fecharModal(); };
-
-document.querySelectorAll('.acoes a.ver-mais').forEach(btn => {
-    btn.addEventListener('click', e => {
-        e.preventDefault();
-        const ocorrencia = {
-            id: btn.dataset.id,
-            titulo: btn.dataset.titulo,
-            tipo: btn.dataset.tipo,
-            status: btn.dataset.status,
-            descricao: btn.dataset.descricao
-        };
-        abrirModal(ocorrencia);
-    });
-});
 </script>
+<?php endif; ?>
 </body>
 </html>

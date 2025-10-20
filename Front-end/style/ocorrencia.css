@@ -223,18 +223,19 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 10px;
 }
 
 .sem-ocorrencias p {
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 100px;
 }
 
 .sem-ocorrencias img {
-    max-width: 250px;
-    height: auto;
+    width: 350px !important;
+    height: auto !important;
+    margin-top: -60px !important;
 }
 
 /* ===== LOGO ===== */
