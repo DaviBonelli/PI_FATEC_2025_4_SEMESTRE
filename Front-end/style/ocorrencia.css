@@ -317,12 +317,12 @@ body {
     height: 45px;
 }
 
+
 .logout-icon img {
     height: 28px;
     cursor: pointer;
     transition: transform 0.2s ease;
 }
-
 .logout-icon img:hover {
     transform: scale(1.1);
 }
