@@ -17,8 +17,8 @@ try {
     )");
 
     $usuarios = [
-        ['usuario' => 'ADM', 'senha' => '1234'],
-        ['usuario' => 'FUNC', 'senha' => '123']
+        ['usuario' => 'ADM', 'senha' => password_hash('1234', PASSWORD_DEFAULT)],
+        ['usuario' => 'FUNC', 'senha' => password_hash('123', PASSWORD_DEFAULT)]
     ];
 
     foreach ($usuarios as $u) {
@@ -26,7 +26,10 @@ try {
         $stmt->execute(['usuario' => $u['usuario']]);
         if ($stmt->rowCount() == 0) {
             $stmt_insert = $pdo->prepare("INSERT INTO usuarios (usuario, senha) VALUES (:usuario, :senha)");
-            $stmt_insert->execute(['usuario' => $u['usuario'], 'senha' => $u['senha']]);
+            $stmt_insert->execute([
+                'usuario' => $u['usuario'],
+                'senha' => $u['senha']
+            ]);
         }
     }
 
@@ -41,6 +44,15 @@ try {
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )");
 
+    $pdo->exec("CREATE TABLE IF NOT EXISTS fornecedores (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        usuario_id INT NOT NULL,
+        nome_empresa VARCHAR(100) NOT NULL,
+        categoria VARCHAR(50) NOT NULL,
+        telefone VARCHAR(20) NOT NULL,
+        endereco VARCHAR(255) NOT NULL,
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    )");
 
 } catch (PDOException $e) {
     die("Erro ao conectar ou criar banco/tabelas no MySQL: " . $e->getMessage());
