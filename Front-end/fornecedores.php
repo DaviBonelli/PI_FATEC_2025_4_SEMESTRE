@@ -2,137 +2,189 @@
 session_start();
 require 'bd.php';
 
-// Verifica se usuário está logado
-$usuario_id = $_SESSION['usuario_id'] ?? 0;
-if (!$usuario_id) {
-    header('Location: login.php');
-    exit();
-}
+$tipo_usuario = $_SESSION['tipo_usuario'] ?? ''; 
+$usuario_id   = $_SESSION['usuario_id'] ?? 0;
 
-$id = $_GET['id'] ?? null;
-$modo = $id ? 'editar' : 'adicionar';
-
-// Dados iniciais
-$dados = [
-    'nome_empresa' => '',
-    'categoria' => '',
-    'telefone' => '',
-    'endereco' => ''
-];
-
-// Se estiver editando, busca dados do fornecedor
-if ($id) {
-    try {
-        $stmt = $pdo->prepare("SELECT * FROM fornecedores WHERE id = :id AND usuario_id = :usuario_id");
-        $stmt->execute([
-            ':id' => $id,
-            ':usuario_id' => $usuario_id
-        ]);
-        $dados = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$dados) {
-            die("Fornecedor não encontrado.");
-        }
-    } catch (PDOException $e) {
-        die("Erro ao buscar fornecedor: " . $e->getMessage());
+try {
+    if ($tipo_usuario === 'ADM') {
+        $stmt = $pdo->prepare("SELECT * FROM fornecedores ORDER BY id DESC");
+    } else {
+        $stmt = $pdo->prepare("SELECT * FROM fornecedores WHERE usuario_id = :usuario_id ORDER BY id DESC");
+        $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
     }
-}
 
-// Ao enviar o formulário
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome_empresa = trim($_POST['nome_empresa'] ?? '');
-    $categoria = trim($_POST['categoria'] ?? '');
-    $telefone = trim($_POST['telefone'] ?? '');
-    $endereco = trim($_POST['endereco'] ?? '');
+    $stmt->execute();
+    $fornecedores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    try {
-        if ($id) {
-            // Update
-            $stmt = $pdo->prepare("UPDATE fornecedores 
-                                   SET nome_empresa = :nome_empresa, categoria = :categoria, telefone = :telefone, endereco = :endereco
-                                   WHERE id = :id AND usuario_id = :usuario_id");
-            $stmt->execute([
-                ':nome_empresa' => $nome_empresa,
-                ':categoria' => $categoria,
-                ':telefone' => $telefone,
-                ':endereco' => $endereco,
-                ':id' => $id,
-                ':usuario_id' => $usuario_id
-            ]);
-        } else {
-            // Insert
-            $stmt = $pdo->prepare("INSERT INTO fornecedores (usuario_id, nome_empresa, categoria, telefone, endereco) 
-                                   VALUES (:usuario_id, :nome_empresa, :categoria, :telefone, :endereco)");
-            $stmt->execute([
-                ':usuario_id' => $usuario_id,
-                ':nome_empresa' => $nome_empresa,
-                ':categoria' => $categoria,
-                ':telefone' => $telefone,
-                ':endereco' => $endereco
-            ]);
-        }
-
-        header('Location: fornecedores.php');
-        exit();
-    } catch (PDOException $e) {
-        die("Erro ao salvar fornecedor: " . $e->getMessage());
-    }
+} catch (PDOException $e) {
+    die("Erro ao buscar fornecedores: " . $e->getMessage());
 }
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= strtoupper($modo) ?> FORNECEDOR</title>
-    <link rel="stylesheet" href="style/fornecedor.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página Fornecedores</title>
+<link rel="stylesheet" href="style/fornecedor.css">
 </head>
 <body>
-    <div class="navbar">
-        <img src="../Imagens/logo_cliente.jpeg" alt="Logo Cliente" class="logo-cliente">
-        <a href="index.php" class="logout-icon">
-            <img src="../Imagens/icone_sair.png" alt="Sair">
-        </a>
-    </div>
+<div class="navbar">
+    <img src="../Imagens/logo_cliente.jpeg" alt="Logo Cliente" class="logo-cliente">
+    <a href="index.php" class="logout-icon">
+        <img src="../Imagens/icone_sair.png" alt="Sair">
+    </a>
+</div>
 
-    <div class="container">
-        <aside class="sidebar">
-            <ul>
-                <li><a href="ocorrencias.php"><img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências</a></li>
-                <li><a href="fornecedores.php"><img src="../Imagens/fornecedor_icone.png" alt="Fornecedores"> Fornecedores</a></li>
+<div class="container">
+    <aside class="sidebar">
+        <ul>
+            <li><a href="ocorrencias.php"><img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências</a></li>
+            <?php if ($tipo_usuario === 'ADM'): ?>
+                <li><a href="fornecedores.php" class="ativo"><img src="../Imagens/fornecedor_icone.png" alt="Fornecedores"> Fornecedores</a></li>
                 <li><a href="funcionarios.php"><img src="../Imagens/func_icone.png" alt="Funcionários"> Funcionários</a></li>
-                <li><a href="relatorios.php"><img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios</a></li>
                 <li><a href="maquinas.php"><img src="../Imagens/maquina_icone.png" alt="Máquinas"> Máquinas</a></li>
-            </ul>
-        </aside>
+            <?php endif; ?>
+            <li><a href="relatorios.php"><img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios</a></li>
+        </ul>
+    </aside>
 
-        <main class="main-content">
-            <div class="form-fornecedor">
-                <div class="titulo-pagina">
-                    <h2><?= $modo === 'editar' ? 'EDITAR FORNECEDOR' : 'ADICIONAR FORNECEDOR' ?></h2>
-                    <div class="botoes">
-                        <button type="submit" form="form-fornecedor"><?= $modo === 'editar' ? 'SALVAR' : 'ADICIONAR' ?></button>
-                    </div>
-                </div>
-                <form id="form-fornecedor" method="POST">
-                    <label for="nome_empresa">Nome da empresa</label>
-                    <input type="text" id="nome_empresa" name="nome_empresa" placeholder="..." required
-                           value="<?= htmlspecialchars($dados['nome_empresa']) ?>">
-
-                    <label for="categoria">Categoria</label>
-                    <input type="text" id="categoria" name="categoria" placeholder="..." required
-                           value="<?= htmlspecialchars($dados['categoria']) ?>">
-
-                    <label for="telefone">Telefone</label>
-                    <input type="text" id="telefone" name="telefone" placeholder="..." required
-                           value="<?= htmlspecialchars($dados['telefone']) ?>">
-
-                    <label for="endereco">Endereço</label>
-                    <input type="text" id="endereco" name="endereco" placeholder="..." required
-                           value="<?= htmlspecialchars($dados['endereco']) ?>">
-                </form>
+    <main class="main-content">
+        <div class="titulo-pagina">
+            <h2>FORNECEDORES</h2>
+            <div class="botoes">
+                <button onclick="window.location.href='adicionar_fornecedores.php'">ADICIONAR</button>
+                <?php if ($tipo_usuario === 'ADM'): ?>
+                    <button id="btnRemover" type="button" class="btn-remover">REMOVER</button>
+                <?php endif; ?>
             </div>
-        </main>
+        </div>
+
+        <form id="formRemover" method="POST" action="remover_fornecedor.php">
+            <div class="lista-fornecedores">
+                <?php if (!empty($fornecedores)): ?>
+                    <?php foreach ($fornecedores as $f): ?>
+                        <div class="fornecedor-card">
+                            <?php if ($tipo_usuario === 'ADM'): ?>
+                                <input type="checkbox" name="fornecedores[]" value="<?= $f['id'] ?>" class="checkbox-fornecedor">
+                            <?php endif; ?>
+                            <div class="info">
+                                <h3><?= htmlspecialchars($f['nome']) ?></h3>
+                                <p><strong>CNPJ:</strong> <?= htmlspecialchars($f['cnpj']) ?></p>
+                                <p><strong>Categoria:</strong> <?= htmlspecialchars($f['categoria']) ?></p>
+                                <p><strong>Telefone:</strong> <?= htmlspecialchars($f['telefone']) ?></p>
+                                <p><strong>Endereço:</strong> <?= htmlspecialchars($f['endereco']) ?></p>
+                            </div>
+                            <div class="acoes">
+                                <a href="adicionar_fornecedor.php?id=<?= $f['id'] ?>">
+                                    <img src="../Imagens/editar.png" alt="Editar">
+                                </a>
+                                <br>
+                                <a href="#"
+                                   class="ver-mais"
+                                   data-id="<?= $f['id'] ?>"
+                                   data-nome="<?= htmlspecialchars($f['nome'], ENT_QUOTES) ?>"
+                                   data-cnpj="<?= htmlspecialchars($f['cnpj'], ENT_QUOTES) ?>"
+                                   data-categoria="<?= htmlspecialchars($f['categoria'], ENT_QUOTES) ?>"
+                                   data-telefone="<?= htmlspecialchars($f['telefone'], ENT_QUOTES) ?>"
+                                   data-endereco="<?= htmlspecialchars($f['endereco'], ENT_QUOTES) ?>">
+                                   <img src="../Imagens/visualizar.png" alt="Ver Mais">
+                                </a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="sem-fornecedores">
+                        <p>Nenhum fornecedor cadastrado no momento.</p>
+                        <img src="../Imagens/nada_encontrado.png" alt="Sem fornecedores">
+                    </div>
+                <?php endif; ?>
+            </div>
+        </form>
+    </main>
+</div>
+
+<div id="modalFornecedor" class="modal">
+    <div class="modal-content">
+        <span class="fechar">&times;</span>
+        <h2 id="modalNome"></h2>
+        <p><strong>CNPJ:</strong> <span id="modalCnpj"></span></p>
+        <p><strong>Categoria:</strong> <span id="modalCategoria"></span></p>
+        <p><strong>Telefone:</strong> <span id="modalTelefone"></span></p>
+        <p><strong>Endereço:</strong> <span id="modalEndereco"></span></p>
+        <div class="botoes-modal">
+            <button id="btnEditar" class="btn-editar">Editar</button>
+            <button class="btn-fechar" onclick="fecharModal()">Fechar</button>
+        </div>
     </div>
+</div>
+
+<script>
+const modal = document.getElementById('modalFornecedor');
+const fechar = document.querySelector('.fechar');
+const btnEditar = document.getElementById('btnEditar');
+
+function abrirModal(f) {
+    document.getElementById('modalNome').textContent = f.nome;
+    document.getElementById('modalCnpj').textContent = f.cnpj;
+    document.getElementById('modalCategoria').textContent = f.categoria;
+    document.getElementById('modalTelefone').textContent = f.telefone;
+    document.getElementById('modalEndereco').textContent = f.endereco;
+
+    btnEditar.onclick = () => window.location.href = `adicionar_fornecedor.php?id=${f.id}`;
+    modal.style.display = 'flex';
+}
+
+function fecharModal() {
+    modal.style.display = 'none';
+}
+
+fechar.onclick = fecharModal;
+window.onclick = e => { if (e.target === modal) fecharModal(); };
+
+document.querySelectorAll('.acoes a.ver-mais').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault();
+        const fornecedor = {
+            id: btn.dataset.id,
+            nome: btn.dataset.nome,
+            cnpj: btn.dataset.cnpj,
+            categoria: btn.dataset.categoria,
+            telefone: btn.dataset.telefone,
+            endereco: btn.dataset.endereco
+        };
+        abrirModal(fornecedor);
+    });
+});
+</script>
+
+<?php if ($tipo_usuario === 'ADM'): ?>
+<script>
+const btnRemover = document.getElementById('btnRemover');
+const formRemover = document.getElementById('formRemover');
+let modoRemover = false;
+
+btnRemover.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('.checkbox-fornecedor');
+
+    if (!modoRemover) {
+        modoRemover = true;
+        btnRemover.textContent = 'CONFIRMAR REMOÇÃO';
+        return;
+    }
+
+    const selecionados = Array.from(checkboxes).filter(c => c.checked);
+
+    if (selecionados.length === 0) {
+        alert('Selecione pelo menos um fornecedor para remover.');
+        return;
+    }
+
+    if (confirm('Tem certeza que deseja excluir os fornecedores selecionados?')) {
+        formRemover.submit();
+    }
+});
+</script>
+<?php endif; ?>
 </body>
 </html>
