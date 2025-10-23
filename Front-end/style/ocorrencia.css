@@ -273,16 +273,17 @@ body {
 
 .form-ocorrencia button {
     align-self: flex-start;
-    background-color: white;
+    background-color: #1f1288;
     border: 1px solid black;
     border-radius: 20px;
     padding: 8px 18px;
     cursor: pointer;
     transition: 0.3s;
+     color: white;
 }
 
 .form-ocorrencia button:hover {
-    background-color: #e4e4e4;
+    background-color: #1f1288;
 }
 
 /* ===== CHECKBOX PARA REMOÇÃO ===== */
@@ -475,15 +476,15 @@ body {
     transform: scale(1.1);
 }
 .sem-ocorrencias {
-    text-align: center;
-    margin-top: 40px;
-    color: #555;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 100px;
 }
 
 .sem-ocorrencias img {
-    width: 120px;
-    opacity: 0.6;
-    margin-top: 10px;
+   width: 350px !important;
+    height: auto !important;
+    margin-top: -60px !important;
 }
 
 /* ===== Modal de Visualização ===== */

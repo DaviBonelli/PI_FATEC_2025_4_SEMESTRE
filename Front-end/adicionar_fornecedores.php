@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= strtoupper($modo) ?> FORNECEDOR</title>
+    <title><?= $modo === 'editar' ? 'EDITAR FORNECEDOR' : 'FORNECEDORES' ?></title>
     <link rel="stylesheet" href="style/fornecedor.css">
 </head>
 <body>
@@ -104,12 +104,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </aside>
 
         <main class="main-content">
+            <div class="titulo-pagina">
+                <h2><?= $modo === 'editar' ? 'EDITAR FORNECEDOR' : 'FORNECEDORES' ?></h2>
+            </div>
+
             <div class="form-fornecedor">
-                <div class="titulo-pagina">
-                    <h2><?= $modo === 'editar' ? 'EDITAR FORNECEDOR' : 'ADICIONAR FORNECEDOR' ?></h2>
-                    <div class="botoes">
-                        <button type="submit" form="form-fornecedor"><?= $modo === 'editar' ? 'SALVAR' : 'ADICIONAR' ?></button>
-                    </div>
+                <div class="botoes">
+                    <button type="submit" form="form-fornecedor"><?= $modo === 'editar' ? 'SALVAR' : 'ADICIONAR' ?></button>
                 </div>
                 <form id="form-fornecedor" method="POST">
                     <label for="nome">Nome da empresa</label>
@@ -128,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" id="telefone" name="telefone" placeholder="..." required
                            value="<?= htmlspecialchars($dados['telefone']) ?>">
 
-                    <label for="endereco">Endereço</label>
+                    <label for="endereco">Endereço (CEP)</label>
                     <input type="text" id="endereco" name="endereco" placeholder="..." required
                            value="<?= htmlspecialchars($dados['endereco']) ?>">
                 </form>

@@ -73,7 +73,7 @@ try {
                                 <p><strong>CNPJ:</strong> <?= htmlspecialchars($f['cnpj']) ?></p>
                                 <p><strong>Categoria:</strong> <?= htmlspecialchars($f['categoria']) ?></p>
                                 <p><strong>Telefone:</strong> <?= htmlspecialchars($f['telefone']) ?></p>
-                                <p><strong>Endereço:</strong> <?= htmlspecialchars($f['endereco']) ?></p>
+                                <p><strong>Endereço (CEP):</strong> <?= htmlspecialchars($f['endereco']) ?></p>
                             </div>
                             <div class="acoes">
                                 <a href="adicionar_fornecedor.php?id=<?= $f['id'] ?>">
@@ -96,7 +96,7 @@ try {
                 <?php else: ?>
                     <div class="sem-fornecedores">
                         <p>Nenhum fornecedor cadastrado no momento.</p>
-                        <img src="../Imagens/nada_encontrado.png" alt="Sem fornecedores">
+                        <img src="../Imagens/nada_encontrado2.png" alt="Sem fornecedores">
                     </div>
                 <?php endif; ?>
             </div>
@@ -111,7 +111,7 @@ try {
         <p><strong>CNPJ:</strong> <span id="modalCnpj"></span></p>
         <p><strong>Categoria:</strong> <span id="modalCategoria"></span></p>
         <p><strong>Telefone:</strong> <span id="modalTelefone"></span></p>
-        <p><strong>Endereço:</strong> <span id="modalEndereco"></span></p>
+        <p><strong>Endereço (CEP):</strong> <span id="modalEndereco"></span></p>
         <div class="botoes-modal">
             <button id="btnEditar" class="btn-editar">Editar</button>
             <button class="btn-fechar" onclick="fecharModal()">Fechar</button>
