@@ -5,11 +5,13 @@ require 'bd.php';
 $usuario_id = $_SESSION['usuario_id'] ?? 0;
 $id = $_GET['id'] ?? null;
 $modo = $id ? 'editar' : 'adicionar';
+
 $dados = [
     'titulo' => '',
     'tipo' => '',
     'status' => '',
-    'descricao' => ''
+    'descricao' => '',
+    'imagem' => ''
 ];
 
 if ($id) {
@@ -17,7 +19,6 @@ if ($id) {
         $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE id = :id");
         $stmt->execute([':id' => $id]);
         $dados = $stmt->fetch(PDO::FETCH_ASSOC);
-
         if (!$dados) {
             die("Ocorrência não encontrada.");
         }
@@ -31,31 +32,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipo = $_POST['tipo'] ?? '';
     $status = $_POST['status'] ?? '';
     $descricao = $_POST['descricao'] ?? '';
+    $imagem = $dados['imagem'];
+
+    if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
+        $nomeArquivo = uniqid('img_') . '.' . strtolower($extensao);
+        $diretorioUploads = __DIR__ . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
+        if (!is_dir($diretorioUploads)) mkdir($diretorioUploads, 0755, true);
+        $caminhoDestino = $diretorioUploads . $nomeArquivo;
+        if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminhoDestino)) {
+            $imagem = '../uploads/' . $nomeArquivo; 
+        } else {
+            die("Erro ao fazer upload da imagem. Verifique se a pasta 'uploads' existe e tem permissão de escrita.");
+        }
+    }
 
     try {
         if ($id) {
             $stmt = $pdo->prepare("UPDATE ocorrencias 
-                                   SET titulo = :titulo, tipo = :tipo, status = :status, descricao = :descricao
+                                   SET titulo = :titulo, tipo = :tipo, status = :status, descricao = :descricao, imagem = :imagem
                                    WHERE id = :id");
             $stmt->execute([
                 ':titulo' => $titulo,
                 ':tipo' => $tipo,
                 ':status' => $status,
                 ':descricao' => $descricao,
+                ':imagem' => $imagem,
                 ':id' => $id
             ]);
         } else {
-            $stmt = $pdo->prepare("INSERT INTO ocorrencias (usuario_id, titulo, tipo, status, descricao) 
-                                   VALUES (:usuario_id, :titulo, :tipo, :status, :descricao)");
+            $stmt = $pdo->prepare("INSERT INTO ocorrencias (usuario_id, titulo, tipo, status, descricao, imagem) 
+                                   VALUES (:usuario_id, :titulo, :tipo, :status, :descricao, :imagem)");
             $stmt->execute([
                 ':usuario_id' => $usuario_id,
                 ':titulo' => $titulo,
                 ':tipo' => $tipo,
                 ':status' => $status,
-                ':descricao' => $descricao
+                ':descricao' => $descricao,
+                ':imagem' => $imagem
             ]);
         }
-
         header('Location: ocorrencias.php');
         exit();
     } catch (PDOException $e) {
@@ -63,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -95,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2><?= strtoupper($modo) ?> OCORRÊNCIA</h2>
             </div>
 
-            <form method="POST" class="form-ocorrencia">
+            <form method="POST" enctype="multipart/form-data" class="form-ocorrencia">
                 <label for="titulo">Título da ocorrência</label>
                 <input type="text" id="titulo" name="titulo" placeholder="Digite o título" required
                        value="<?= htmlspecialchars($dados['titulo']) ?>">
@@ -117,6 +134,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <label for="descricao">Descrição</label>
                 <textarea id="descricao" name="descricao" rows="4" placeholder="Digite a descrição..."><?= htmlspecialchars($dados['descricao']) ?></textarea>
+
+                <label for="imagem">Imagem (opcional)</label>
+                <input type="file" id="imagem" name="imagem" accept="image/*">
+
+                <?php if (!empty($dados['imagem'])): ?>
+                    <div class="imagem-preview">
+                        <p>Imagem atual:</p>
+                        <img src="<?= htmlspecialchars($dados['imagem']) ?>" alt="Imagem da ocorrência" style="max-width:200px; border-radius:8px;">
+                    </div>
+                <?php endif; ?>
 
                 <button type="submit"><?= $modo === 'editar' ? 'SALVAR ALTERAÇÕES' : 'ADICIONAR' ?></button>
             </form>
