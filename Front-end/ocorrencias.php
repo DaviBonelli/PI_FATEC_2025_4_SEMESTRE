@@ -65,8 +65,13 @@ try {
                 <?php if (!empty($ocorrencias)): ?>
                    <?php foreach ($ocorrencias as $oc): ?>
     <?php
-        $imagemCaminho = !empty($oc['imagem']) ? 'Front-end/' . $oc['imagem'] : '';
-    ?>
+$imagemCaminho = '';
+if (!empty($oc['imagem'])) {
+    $imagemCaminho = str_starts_with($oc['imagem'], 'uploads/') 
+        ? $oc['imagem'] 
+        : 'uploads/' . ltrim($oc['imagem'], '/');
+}
+?>
     <div class="ocorrencia-card">
         <?php if ($tipo_usuario === 'ADM'): ?>
             <input type="checkbox" name="ocorrencias[]" value="<?= $oc['id'] ?>" class="checkbox-ocorrencia">
