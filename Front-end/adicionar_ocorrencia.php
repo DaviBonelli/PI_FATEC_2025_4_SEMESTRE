@@ -93,6 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <img src="../Imagens/logo_cliente.jpeg" alt="Logo Cliente" class="logo-cliente">
         <a href="index.php" class="logout-icon">
             <img src="../Imagens/icone_sair.png" alt="Sair">
+            <a href="ocorrencias.php" class="voltar-icon">
+    <img src="../Imagens/voltar.png" alt="Voltar">
         </a>
     </div>
 

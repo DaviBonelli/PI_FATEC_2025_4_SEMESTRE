@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'bd.php';
+
 $usuario_id = $_SESSION['usuario_id'] ?? 0;
 if (!$usuario_id) {
     header('Location: login.php');
@@ -76,12 +77,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $modo === 'editar' ? 'EDITAR FORNECEDOR' : 'FORNECEDORES' ?></title>
+    <title><?= $modo === 'editar' ? 'Editar' : 'Adicionar' ?> Fornecedor</title>
     <link rel="stylesheet" href="style/fornecedor.css">
 </head>
 <body>
@@ -89,7 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <img src="../Imagens/logo_cliente.jpeg" alt="Logo Cliente" class="logo-cliente">
         <a href="index.php" class="logout-icon">
             <img src="../Imagens/icone_sair.png" alt="Sair">
-        </a>
+            <a href="fornecedores.php" class="voltar-icon">
+    <img src="../Imagens/voltar.png" alt="Voltar">
+</a>
     </div>
 
     <div class="container">
@@ -98,42 +102,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li><a href="ocorrencias.php"><img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências</a></li>
                 <li><a href="fornecedores.php" class="ativo"><img src="../Imagens/fornecedor_icone.png" alt="Fornecedores"> Fornecedores</a></li>
                 <li><a href="funcionarios.php"><img src="../Imagens/func_icone.png" alt="Funcionários"> Funcionários</a></li>
-                <li><a href="relatorios.php"><img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios</a></li>
                 <li><a href="maquinas.php"><img src="../Imagens/maquina_icone.png" alt="Máquinas"> Máquinas</a></li>
+                <li><a href="relatorios.php"><img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios</a></li>
             </ul>
         </aside>
 
         <main class="main-content">
             <div class="titulo-pagina">
-                <h2><?= $modo === 'editar' ? 'EDITAR FORNECEDOR' : 'FORNECEDORES' ?></h2>
+                <h2><?= strtoupper($modo) ?> FORNECEDOR</h2>
             </div>
 
-            <div class="form-fornecedor">
-                <div class="botoes">
-                    <button type="submit" form="form-fornecedor"><?= $modo === 'editar' ? 'SALVAR' : 'ADICIONAR' ?></button>
-                </div>
-                <form id="form-fornecedor" method="POST">
-                    <label for="nome">Nome da empresa</label>
-                    <input type="text" id="nome" name="nome" placeholder="..." required
-                           value="<?= htmlspecialchars($dados['nome']) ?>">
+            <form method="POST" class="form-fornecedor">
+                <label for="nome">Nome da empresa</label>
+                <input type="text" id="nome" name="nome" placeholder="Digite o nome da empresa" required
+                       value="<?= htmlspecialchars($dados['nome']) ?>">
 
-                    <label for="cnpj">CNPJ</label>
-                    <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0001-00" required
-                           value="<?= htmlspecialchars($dados['cnpj']) ?>">
+                <label for="cnpj">CNPJ</label>
+                <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0001-00" required
+                       value="<?= htmlspecialchars($dados['cnpj']) ?>">
 
-                    <label for="categoria">Categoria</label>
-                    <input type="text" id="categoria" name="categoria" placeholder="..." required
-                           value="<?= htmlspecialchars($dados['categoria']) ?>">
+                <label for="categoria">Categoria</label>
+                <input type="text" id="categoria" name="categoria" placeholder="Digite a categoria" required
+                       value="<?= htmlspecialchars($dados['categoria']) ?>">
 
-                    <label for="telefone">Telefone</label>
-                    <input type="text" id="telefone" name="telefone" placeholder="..." required
-                           value="<?= htmlspecialchars($dados['telefone']) ?>">
+                <label for="telefone">Telefone</label>
+                <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" required
+                       value="<?= htmlspecialchars($dados['telefone']) ?>">
 
-                    <label for="endereco">Endereço (CEP)</label>
-                    <input type="text" id="endereco" name="endereco" placeholder="..." required
-                           value="<?= htmlspecialchars($dados['endereco']) ?>">
-                </form>
-            </div>
+                <label for="endereco">Endereço (CEP)</label>
+                <input type="text" id="endereco" name="endereco" placeholder="Digite o endereço ou CEP" required
+                       value="<?= htmlspecialchars($dados['endereco']) ?>">
+
+                <button type="submit"><?= $modo === 'editar' ? 'SALVAR ALTERAÇÕES' : 'ADICIONAR' ?></button>
+            </form>
         </main>
     </div>
 </body>
