@@ -63,40 +63,44 @@ try {
         <form id="formRemover" method="POST" action="remover_ocorrencia.php">
             <div class="lista-ocorrencias">
                 <?php if (!empty($ocorrencias)): ?>
-                    <?php foreach ($ocorrencias as $oc): ?>
-                        <div class="ocorrencia-card">
-                            <?php if ($tipo_usuario === 'ADM'): ?>
-                                <input type="checkbox" name="ocorrencias[]" value="<?= $oc['id'] ?>" class="checkbox-ocorrencia">
-                            <?php endif; ?>
-                            <div class="info">
-                                <h3><?= htmlspecialchars($oc['titulo']) ?></h3>
-                                <p><strong>Tipo:</strong> <?= htmlspecialchars($oc['tipo']) ?></p>
-                                <p><strong>Status:</strong> <?= htmlspecialchars($oc['status']) ?></p>
-                                <?php if (!empty($oc['descricao'])): ?>
-                                    <div class="descricao">
-                                        <strong>Descrição:</strong> 
-                                        <?= nl2br(htmlspecialchars(mb_strimwidth($oc['descricao'], 0, 60, '...'))) ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                            <div class="acoes">
-                                <a href="adicionar_ocorrencia.php?id=<?= $oc['id'] ?>">
-                                    <img src="../Imagens/editar.png" alt="Editar">
-                                </a>
-                                <br>
-                                <a href="#"
-                                   class="ver-mais"
-                                   data-id="<?= $oc['id'] ?>"
-                                   data-titulo="<?= htmlspecialchars($oc['titulo'], ENT_QUOTES) ?>"
-                                   data-tipo="<?= htmlspecialchars($oc['tipo'], ENT_QUOTES) ?>"
-                                   data-status="<?= htmlspecialchars($oc['status'], ENT_QUOTES) ?>"
-                                   data-descricao="<?= htmlspecialchars($oc['descricao'] ?? '', ENT_QUOTES) ?>"
-                                   data-imagem="<?= htmlspecialchars($oc['imagem'] ?? '', ENT_QUOTES) ?>">
-                                   <img src="../Imagens/visualizar.png" alt="Ver Mais">
-                                </a>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                   <?php foreach ($ocorrencias as $oc): ?>
+    <?php
+        $imagemCaminho = !empty($oc['imagem']) ? 'Front-end/' . $oc['imagem'] : '';
+    ?>
+    <div class="ocorrencia-card">
+        <?php if ($tipo_usuario === 'ADM'): ?>
+            <input type="checkbox" name="ocorrencias[]" value="<?= $oc['id'] ?>" class="checkbox-ocorrencia">
+        <?php endif; ?>
+        <div class="info">
+            <h3><?= htmlspecialchars($oc['titulo']) ?></h3>
+            <p><strong>Tipo:</strong> <?= htmlspecialchars($oc['tipo']) ?></p>
+            <p><strong>Status:</strong> <?= htmlspecialchars($oc['status']) ?></p>
+            <?php if (!empty($oc['descricao'])): ?>
+                <div class="descricao">
+                    <strong>Descrição:</strong> 
+                    <?= nl2br(htmlspecialchars(mb_strimwidth($oc['descricao'], 0, 60, '...'))) ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="acoes">
+            <a href="adicionar_ocorrencia.php?id=<?= $oc['id'] ?>">
+                <img src="../Imagens/editar.png" alt="Editar">
+            </a>
+            <br>
+            <a href="#"
+               class="ver-mais"
+               data-id="<?= $oc['id'] ?>"
+               data-titulo="<?= htmlspecialchars($oc['titulo'], ENT_QUOTES) ?>"
+               data-tipo="<?= htmlspecialchars($oc['tipo'], ENT_QUOTES) ?>"
+               data-status="<?= htmlspecialchars($oc['status'], ENT_QUOTES) ?>"
+               data-descricao="<?= htmlspecialchars($oc['descricao'] ?? '', ENT_QUOTES) ?>"
+               data-imagem="<?= htmlspecialchars($imagemCaminho, ENT_QUOTES) ?>">
+               <img src="../Imagens/visualizar.png" alt="Ver Mais">
+            </a>
+        </div>
+    </div>
+<?php endforeach; ?>
+
                 <?php else: ?>
                     <div class="sem-ocorrencias">
                         <p>Nenhum resultado disponível no momento.</p>
@@ -135,13 +139,13 @@ function abrirModal(ocorrencia) {
     document.getElementById('modalTipo').textContent = ocorrencia.tipo;
     document.getElementById('modalStatus').textContent = ocorrencia.status;
     document.getElementById('modalDescricao').innerHTML = ocorrencia.descricao ? `<strong>Descrição:</strong><br>${ocorrencia.descricao}` : '';
-    const imgModal = document.getElementById('modalImagem');
-    if (ocorrencia.imagem) {
-        imgModal.src = ocorrencia.imagem;
-        imgModal.style.display = 'block';
-    } else {
-        imgModal.style.display = 'none';
-    }
+   const imgModal = document.getElementById('modalImagem');
+if (ocorrencia.imagem) {
+    imgModal.src = ocorrencia.imagem; 
+    imgModal.style.display = 'block';
+} else {
+    imgModal.style.display = 'none';
+}
     btnEditar.onclick = () => window.location.href = `adicionar_ocorrencia.php?id=${ocorrencia.id}`;
     modal.style.display = 'flex';
 }

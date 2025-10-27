@@ -607,7 +607,21 @@ body {
     justify-content: flex-end;
     gap: 10px;
     margin-top: 10px;
+    
 }
 
 
+.modal-imagem-wrapper {
+    text-align: center; 
+    margin: 10px 0;
+}
+
+#modalImagem {
+    max-width: 100%;   
+    max-height: 300px; 
+    object-fit: contain; 
+    display: block;
+    margin: 0 auto; 
+    border-radius: 5px; 
+}
 

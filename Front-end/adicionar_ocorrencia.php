@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!is_dir($diretorioUploads)) mkdir($diretorioUploads, 0755, true);
         $caminhoDestino = $diretorioUploads . $nomeArquivo;
         if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminhoDestino)) {
-            $imagem = '../uploads/' . $nomeArquivo; 
+            $imagem = 'Front-end/uploads/' . $nomeArquivo; 
         } else {
             die("Erro ao fazer upload da imagem. Verifique se a pasta 'uploads' existe e tem permissão de escrita.");
         }
