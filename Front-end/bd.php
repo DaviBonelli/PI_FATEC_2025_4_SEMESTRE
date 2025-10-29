@@ -40,6 +40,7 @@ try {
         tipo VARCHAR(50) NOT NULL,
         status VARCHAR(50) NOT NULL,
         descricao TEXT,
+        imagem VARCHAR(255) NULL,
         data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )");

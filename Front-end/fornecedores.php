@@ -76,7 +76,7 @@ try {
                                 <p><strong>Endereço (CEP):</strong> <?= htmlspecialchars($f['endereco']) ?></p>
                             </div>
                             <div class="acoes">
-                                <a href="adicionar_fornecedor.php?id=<?= $f['id'] ?>">
+                                <a href="adicionar_fornecedores.php?id=<?= $f['id'] ?>">
                                     <img src="../Imagens/editar.png" alt="Editar">
                                 </a>
                                 <br>
@@ -88,7 +88,6 @@ try {
                                    data-categoria="<?= htmlspecialchars($f['categoria'], ENT_QUOTES) ?>"
                                    data-telefone="<?= htmlspecialchars($f['telefone'], ENT_QUOTES) ?>"
                                    data-endereco="<?= htmlspecialchars($f['endereco'], ENT_QUOTES) ?>">
-                                   <img src="../Imagens/visualizar.png" alt="Ver Mais">
                                 </a>
                             </div>
                         </div>
