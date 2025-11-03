@@ -89,7 +89,7 @@ try {
                 <?php else: ?>
                     <div class="sem-funcionarios">
                         <p>Nenhum funcionário cadastrado no momento.</p>
-                        <img src="../Imagens/nada_encontrado2.png" alt="Sem funcionários">
+                        <img src="../Imagens/nada_encontrado3.png" alt="Sem funcionários">
                     </div>
                 <?php endif; ?>
             </div>
