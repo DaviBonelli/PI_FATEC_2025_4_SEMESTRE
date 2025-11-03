@@ -1,3 +1,6 @@
+/* ============================
+   ESTILO BASE GERAL
+============================ */
 * {
     margin: 0;
     padding: 0;
@@ -6,11 +9,13 @@
 }
 
 body {
-    background: #d3d3d3; 
+    background: #d3d3d3;
     color: #000;
 }
 
-/* ===== NAVBAR ===== */
+/* ============================
+   NAVBAR
+============================ */
 .navbar {
     width: 100%;
     height: 60px;
@@ -23,6 +28,13 @@ body {
     position: relative;
 }
 
+.logo-cliente {
+    width: 130px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* ===== Ícone Logout ===== */
 .logout-icon {
     position: relative;
     background: none;
@@ -46,7 +58,7 @@ body {
     position: absolute;
     top: 40px;
     right: 0;
-    background: #291aadff;
+    background: #291aad;
     color: #fff;
     padding: 5px 8px;
     font-size: 12px;
@@ -61,7 +73,36 @@ body {
     opacity: 1;
 }
 
-/* ===== LAYOUT ===== */
+/* ===== Botão Voltar ===== */
+.voltar-icon {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.voltar-icon img {
+    width: 24px;
+    height: 24px;
+}
+
+.voltar-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* ============================
+   LAYOUT GERAL
+============================ */
 .container {
     display: flex;
     height: calc(100vh - 60px);
@@ -77,8 +118,6 @@ body {
 
 .sidebar ul {
     list-style: none;
-    margin: 0;
-    padding: 0;
 }
 
 .sidebar li {
@@ -106,7 +145,6 @@ body {
 
 .sidebar a:hover {
     background-color: #f2f2f2;
-    color: #000;
     transform: translateX(5px);
 }
 
@@ -116,7 +154,9 @@ body {
     overflow-y: auto;
 }
 
-/* ===== TÍTULO E BOTÕES ===== */
+/* ============================
+   TÍTULOS E BOTÕES DE AÇÃO
+============================ */
 .titulo-pagina {
     display: flex;
     justify-content: space-between;
@@ -132,10 +172,10 @@ body {
 .botoes button {
     padding: 8px 18px;
     margin-left: 10px;
-    background-color: #291aadff;
+    background-color: #291aad;
     color: #fff;
     border: none;
-    border-radius: 20px; 
+    border-radius: 20px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.2s;
@@ -145,29 +185,34 @@ body {
     background-color: #1f1288;
 }
 
-/* Botão de remover */
+/* ===== Botão Remover ===== */
 .btn-remover {
-   background-color: #d90000 !important;
+    background-color: #d90000 !important;
     border: 1px solid #b00000;
     border-radius: 20px;
     padding: 8px 18px;
-    cursor: pointer;
     color: #fff !important;
     font-weight: bold;
+    cursor: pointer;
     transition: 0.3s;
 }
 
-.btn-remover.ativo {
-     background-color: #a00000 !important;
+.btn-remover:hover {
+    background-color: #a00000 !important;
 }
 
-/* ===== LISTA DE FORNECEDORES ===== */
+/* ============================
+   LISTAS (Ocorrência / Fornecedor)
+============================ */
+.lista-ocorrencias,
 .lista-fornecedores {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
+/* Cards */
+.ocorrencia-card,
 .fornecedor-card {
     display: flex;
     justify-content: space-between;
@@ -179,6 +224,47 @@ body {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.ocorrencia-card:hover,
+.fornecedor-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.info h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.info p {
+    font-size: 14px;
+    color: #555;
+}
+
+.descricao {
+    font-size: 13px;
+    color: #555;
+    margin-top: 5px;
+}
+
+.acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.acoes img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.acoes img:hover {
+    transform: scale(1.1);
+}
+
+/* ===== Checkbox de Remoção ===== */
+.checkbox-ocorrencia,
 .checkbox-fornecedor {
     display: none;
     margin-right: 10px;
@@ -186,39 +272,15 @@ body {
     accent-color: #d90000;
 }
 
+.remocao-ativa .checkbox-ocorrencia,
 .remocao-ativa .checkbox-fornecedor {
     display: inline-block;
 }
 
-.info h3 {
-    margin: 0;
-    color: #333;
-}
-
-.info p {
-    margin: 5px 0;
-    color: #555;
-}
-
-.descricao {
-    font-size: 14px;
-    background: #f9f9f9;
-    padding: 8px;
-    border-radius: 8px;
-    border: 1px solid #eee;
-}
-
-.acoes img {
-    width: 25px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.acoes img:hover {
-    transform: scale(1.1);
-}
-
-/* ===== SEM FORNECEDORES ===== */
+/* ============================
+   MENSAGENS "SEM RESULTADO"
+============================ */
+.sem-ocorrencias,
 .sem-fornecedores {
     display: flex;
     flex-direction: column;
@@ -227,24 +289,24 @@ body {
     margin-top: 10px;
 }
 
+.sem-ocorrencias p,
 .sem-fornecedores p {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 100px;
 }
 
+.sem-ocorrencias img,
 .sem-fornecedores img {
     width: 350px !important;
     height: auto !important;
     margin-top: -60px !important;
 }
-/* ===== LOGO ===== */
-.logo-cliente {
-    height: 45px;
-    object-fit: contain;
-}
 
-/* ===== FORMULÁRIO DE FORNECEDOR ===== */
+/* ============================
+   FORMULÁRIOS (Ocorrência / Fornecedor)
+============================ */
+.form-ocorrencia,
 .form-fornecedor {
     background-color: #f5f5f5;
     padding: 30px;
@@ -254,17 +316,20 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    position: relative; 
-    padding-bottom: 80px; 
+    position: relative;
 }
 
+.form-ocorrencia label,
 .form-fornecedor label {
     font-weight: bold;
     color: #333;
 }
 
+.form-ocorrencia input,
 .form-fornecedor input,
+.form-ocorrencia select,
 .form-fornecedor select,
+.form-ocorrencia textarea,
 .form-fornecedor textarea {
     padding: 10px;
     border: 1px solid #ccc;
@@ -272,6 +337,7 @@ body {
     width: 100%;
 }
 
+.form-ocorrencia button,
 .form-fornecedor button {
     align-self: flex-start;
     background-color: #1f1288;
@@ -279,100 +345,94 @@ body {
     border-radius: 20px;
     padding: 8px 18px;
     cursor: pointer;
-    transition: 0.3s;
-     position: absolute; 
-    bottom: 20px; 
-    right: 30px; 
     color: #fff;
+    transition: 0.3s;
 }
 
+.form-ocorrencia button:hover,
 .form-fornecedor button:hover {
-    background-color: #1f1288;
+    background-color: #1b0f77;
 }
 
-/* ===== MODAL ===== */
+/* ============================
+   MODAL (Visualização / Edição)
+============================ */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
 .modal-content {
-  background: #fff;
-  width: 500px;
-  max-width: 90%;
-  border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  position: relative;
-  animation: abrir 0.3s ease;
+    background: #fff;
+    width: 500px;
+    max-width: 90%;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    position: relative;
+    animation: abrir 0.3s ease;
+}
+
+.modal-content h2 {
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    margin: 5px 0;
+}
+
+.modal-imagem-wrapper {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.modal-imagem-wrapper img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 .fechar {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #666;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
 }
 
 .botoes-modal {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .btn-editar, .btn-fechar {
-  background: #d90000;
-  color: #fff;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.3s;
+    background: #d90000;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .btn-fechar {
-  background: #888;
+    background: #888;
 }
 
 .btn-editar:hover { background: #b00000; }
 .btn-fechar:hover { background: #666; }
 
 @keyframes abrir {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-/* BOTÃO SAIR*/
-.voltar-icon {
-    position: absolute;
-    top: 70px; 
-    right: 20px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.voltar-icon img {
-    width: 24px;
-    height: 24px;
-}
-
-.voltar-icon:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
