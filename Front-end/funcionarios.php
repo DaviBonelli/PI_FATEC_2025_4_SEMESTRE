@@ -149,15 +149,18 @@ const formRemover = document.getElementById('formRemover');
 let modoRemover = false;
 
 btnRemover.addEventListener('click', () => {
-    const checkboxes = document.querySelectorAll('.checkbox-funcionario');
+    const container = document.querySelector('.lista-funcionarios');
 
     if (!modoRemover) {
         modoRemover = true;
+        container.classList.add('modo-remover');
         btnRemover.textContent = 'CONFIRMAR REMOÇÃO';
         return;
     }
 
+    const checkboxes = container.querySelectorAll('.checkbox-funcionario');
     const selecionados = Array.from(checkboxes).filter(c => c.checked);
+
     if (selecionados.length === 0) {
         alert('Selecione pelo menos um funcionário para remover.');
         return;

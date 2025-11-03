@@ -693,9 +693,9 @@ body {
 }
 
 .sem-funcionarios img {
-    width: 350px !important;
+    width: 500px !important;
     height: auto !important;
-    margin-top: -60px !important;
+    margin-top: -155px !important;
 }
 
 /* ============================
@@ -800,6 +800,55 @@ body {
 
 .btn-fechar {
     background: #888;
+}
+
+.checkbox-funcionario {
+    display: none;
+}
+
+body.modo-remover .checkbox-funcionario {
+    display: inline-block;
+}
+.form-funcionario {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 400px;
+    margin: auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.form-funcionario input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.form-funcionario button {
+    background: #1f1288;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form-funcionario button:hover {
+    background: #1f1288;
+}
+.checkbox-funcionario {
+  display: none;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  accent-color: #ff0000;
+}
+
+.modo-remover .checkbox-funcionario {
+  display: inline-block !important;
 }
 
 .btn-editar:hover { background: #b00000; }

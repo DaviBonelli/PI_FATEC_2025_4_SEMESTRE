@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: inicial_adm.php");
             exit();
         } elseif ($usuario === "FUNC") {
-            $_SESSION['tipo_usuario'] = 'FUNCIONARIO';
+            $_SESSION['tipo_usuario'] = 'FUNC';
             header("Location: inicial_func.php");
             exit();
         }

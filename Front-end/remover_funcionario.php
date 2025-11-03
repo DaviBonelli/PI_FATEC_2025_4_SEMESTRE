@@ -11,8 +11,7 @@ if (empty($_POST['funcionarios']) || !is_array($_POST['funcionarios'])) {
     die("Nenhum funcionário selecionado para remoção.");
 }
 
-$funcionarios = $_POST['funcionarios'];
-$funcionarios = array_map('intval', $funcionarios);
+$funcionarios = array_map('intval', $_POST['funcionarios']);
 
 try {
     $placeholders = implode(',', array_fill(0, count($funcionarios), '?'));
