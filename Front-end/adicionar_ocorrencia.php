@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $modo === 'editar' ? 'Editar' : 'Adicionar' ?> Ocorrência</title>
-    <link rel="stylesheet" href="style/ocorrencia.css">
+    <link rel="stylesheet" href="style/style_base.css">
 </head>
 <body>
     <div class="navbar">
