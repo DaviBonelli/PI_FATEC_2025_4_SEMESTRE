@@ -1,3 +1,6 @@
+/* ============================
+   ESTILO BASE GERAL
+============================ */
 * {
     margin: 0;
     padding: 0;
@@ -64,6 +67,7 @@ body {
     display: flex;
     height: calc(100vh - 60px);
 }
+
 .sidebar {
     width: 220px;
     background: #fff;
@@ -129,4 +133,36 @@ body {
 .logo {
     max-width: 300px;
     height: auto;
+}
+
+/* ============================
+   ESTILO ESPECÍFICO - ADM
+============================ */
+body.adm .navbar {
+    background-color: #ffffff;
+    border-bottom: 2px solid #291aadff;
+}
+
+body.adm .sidebar {
+    background: #f8f8ff;
+}
+
+body.adm .main-content h1 {
+    color: #291aadff;
+}
+
+/* ============================
+   ESTILO ESPECÍFICO - FUNCIONÁRIO
+============================ */
+body.func .navbar {
+    background-color: #ffffff;
+    border-bottom: 2px solid #1c6ea4;
+}
+
+body.func .sidebar {
+    background: #f9f9f9;
+}
+
+body.func .main-content h1 {
+    color: #1c6ea4;
 }

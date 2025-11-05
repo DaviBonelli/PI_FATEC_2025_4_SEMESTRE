@@ -11,7 +11,7 @@ require 'bd.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial Administrador</title>
-     <link rel="stylesheet" href="style/inicial_adm.css">
+     <link rel="stylesheet" href="style/inicial.css">
 </head>
 <body>
     <div class="navbar">
