@@ -7,8 +7,6 @@ if (!isset($_POST['ocorrencias']) || empty($_POST['ocorrencias'])) {
 }
 
 $ids = $_POST['ocorrencias'];
-
-// Converte para números inteiros para segurança
 $ids = array_map('intval', $ids);
 
 try {

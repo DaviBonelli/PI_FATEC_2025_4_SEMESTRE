@@ -12,10 +12,8 @@ try {
         $stmt = $pdo->prepare("SELECT * FROM fornecedores WHERE usuario_id = :usuario_id ORDER BY id DESC");
         $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
     }
-
     $stmt->execute();
     $fornecedores = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 } catch (PDOException $e) {
     die("Erro ao buscar fornecedores: " . $e->getMessage());
 }
@@ -26,7 +24,7 @@ try {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Página Fornecedores</title>
-<link rel="stylesheet" href="style/fornecedor.css">
+<link rel="stylesheet" href="style/style_base.css">
 </head>
 <body>
 <div class="navbar">
@@ -79,7 +77,6 @@ try {
                                 <a href="adicionar_fornecedores.php?id=<?= $f['id'] ?>">
                                     <img src="../Imagens/editar.png" alt="Editar">
                                 </a>
-                                <br>
                                 <a href="#"
                                    class="ver-mais"
                                    data-id="<?= $f['id'] ?>"
@@ -129,7 +126,6 @@ function abrirModal(f) {
     document.getElementById('modalCategoria').textContent = f.categoria;
     document.getElementById('modalTelefone').textContent = f.telefone;
     document.getElementById('modalEndereco').textContent = f.endereco;
-
     btnEditar.onclick = () => window.location.href = `adicionar_fornecedor.php?id=${f.id}`;
     modal.style.display = 'flex';
 }
@@ -161,6 +157,7 @@ document.querySelectorAll('.acoes a.ver-mais').forEach(btn => {
 <script>
 const btnRemover = document.getElementById('btnRemover');
 const formRemover = document.getElementById('formRemover');
+const container = document.querySelector('.lista-fornecedores');
 let modoRemover = false;
 
 btnRemover.addEventListener('click', () => {
@@ -169,6 +166,7 @@ btnRemover.addEventListener('click', () => {
     if (!modoRemover) {
         modoRemover = true;
         btnRemover.textContent = 'CONFIRMAR REMOÇÃO';
+        container.classList.add('remocao-ativa');
         return;
     }
 

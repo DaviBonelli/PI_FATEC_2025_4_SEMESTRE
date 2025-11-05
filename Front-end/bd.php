@@ -46,16 +46,24 @@ try {
     )");
 
     $pdo->exec("CREATE TABLE IF NOT EXISTS fornecedores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    nome VARCHAR(100) NOT NULL,
-    cnpj VARCHAR(20) NOT NULL,        
-    categoria VARCHAR(50) NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
-    endereco VARCHAR(255) NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-)");
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        usuario_id INT NOT NULL,
+        nome VARCHAR(100) NOT NULL,
+        cnpj VARCHAR(20) NOT NULL,        
+        categoria VARCHAR(50) NOT NULL,
+        telefone VARCHAR(20) NOT NULL,
+        endereco VARCHAR(255) NOT NULL,
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    )");
 
+    $pdo->exec("CREATE TABLE IF NOT EXISTS funcionarios (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nome VARCHAR(255) NOT NULL,
+        idade INT NOT NULL,
+        funcao VARCHAR(100) NOT NULL,
+        usuario_id INT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )");
 
 } catch (PDOException $e) {
     die("Erro ao conectar ou criar banco/tabelas no MySQL: " . $e->getMessage());
