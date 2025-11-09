@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial Funcionários</title>
-    <link rel="stylesheet" href="style/inicial_func.css">
+    <link rel="stylesheet" href="style/inicial.css">
 </head>
 <body>
     <div class="navbar">

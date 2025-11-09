@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -13,6 +12,7 @@
             <img src="../Imagens/logo.png" alt="Ilustração1">
             <img src="../Imagens/inicio.png" alt="Ilustração2">
         </div>
+
         <div class="login-panel">
             <div class="login-form">
                 <h2>Login</h2>
@@ -29,11 +29,41 @@
                             <input type="password" id="senha" name="senha" placeholder="Senha" required>
                         </label>
                     </div>
-                    <p class="help-link">Precisa de ajuda?</p>
+
+                    <p class="help-link" id="openHelp">Precisa de ajuda?</p>
+
                     <button type="submit" class="login-button">Entrar</button>
                 </form>
             </div>
         </div>
     </div>
+
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <h3>Suporte</h3>
+            <p>Entre em contato com o suporte:</p>
+            <p><strong>bluedev@gmail.com</strong></p>
+            <button class="close-btn" id="closeHelp">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        const openHelp = document.getElementById('openHelp');
+        const modal = document.getElementById('helpModal');
+        const closeHelp = document.getElementById('closeHelp');
+
+        openHelp.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+
+        closeHelp.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
