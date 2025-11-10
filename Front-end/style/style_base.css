@@ -858,3 +858,72 @@ body.modo-remover .checkbox-funcionario {
     from { transform: scale(0.9); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
+
+/* ===========================
+   AJUSTE DO ÍCONE E ÁREA DO FILTRO
+=========================== */
+
+.filtro-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icone-filtro {
+    width: 24px;          
+    height: 24px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.85;
+}
+
+.icone-filtro:hover {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+/* ============================
+   ESTILO DO FILTRO DE OCORRÊNCIAS
+============================ */
+.filtro-container {
+    position: relative;
+    display: inline-block;
+}
+
+.icone-filtro {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    vertical-align: middle;
+}
+
+.icone-filtro:hover {
+    transform: scale(1.1);
+}
+
+.menu-filtro {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.menu-filtro.ativo {
+    display: block;
+}
+
+.menu-filtro select {
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
