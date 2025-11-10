@@ -82,7 +82,6 @@ try {
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )");
 
-    echo "Banco e tabelas criados com sucesso!";
 
 } catch (PDOException $e) {
     die("Erro ao conectar ou criar banco/tabelas no MySQL: " . $e->getMessage());
