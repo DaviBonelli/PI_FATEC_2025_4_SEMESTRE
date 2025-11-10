@@ -37,14 +37,15 @@ require 'bd.php';
                 <img src="../Imagens/func_icone.png" alt="Funcionários"> Funcionários
             </a>
         </li>
-        <li>
-            <a href="relatorios.php">
-                <img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios
-            </a>
-        </li>
+       
         <li>
             <a href="maquinas.php">
                 <img src="../Imagens/maquina_icone.png" alt="Máquinas"> Máquinas
+            </a>
+        </li>
+         <li>
+            <a href="relatorios.php">
+                <img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios
             </a>
         </li>
     </ul>
