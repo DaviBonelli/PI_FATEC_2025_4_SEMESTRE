@@ -65,6 +65,24 @@ try {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
 
+    $pdo->exec("CREATE TABLE IF NOT EXISTS maquinas (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        usuario_id INT NOT NULL,
+        nome VARCHAR(100) NOT NULL,
+        codigo VARCHAR(50) NOT NULL,
+        modelo VARCHAR(100) NOT NULL,
+        fabricante VARCHAR(100) NOT NULL,
+        numero_serie VARCHAR(100) NOT NULL,
+        data_aquisicao DATE NOT NULL,
+        localizacao VARCHAR(150) NOT NULL,
+        status_maquina VARCHAR(50) NOT NULL,
+        descricao TEXT,
+        data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    )");
+
+
 } catch (PDOException $e) {
     die("Erro ao conectar ou criar banco/tabelas no MySQL: " . $e->getMessage());
 }

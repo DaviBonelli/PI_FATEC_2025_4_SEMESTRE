@@ -4,18 +4,29 @@ require 'bd.php';
 
 $tipo_usuario = $_SESSION['tipo_usuario'] ?? ''; 
 $usuario_id   = $_SESSION['usuario_id'] ?? 0;
+$statusFiltro = $_GET['status'] ?? '';
 
 try {
     if ($tipo_usuario === 'ADM') {
-        $stmt = $pdo->prepare("SELECT * FROM ocorrencias ORDER BY id DESC");
+        if (!empty($statusFiltro)) {
+            $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE status = :status ORDER BY id DESC");
+            $stmt->bindValue(':status', $statusFiltro, PDO::PARAM_STR);
+        } else {
+            $stmt = $pdo->prepare("SELECT * FROM ocorrencias ORDER BY id DESC");
+        }
     } else {
-        $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE usuario_id = :usuario_id ORDER BY id DESC");
-        $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
+        if (!empty($statusFiltro)) {
+            $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE usuario_id = :usuario_id AND status = :status ORDER BY id DESC");
+            $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
+            $stmt->bindValue(':status', $statusFiltro, PDO::PARAM_STR);
+        } else {
+            $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE usuario_id = :usuario_id ORDER BY id DESC");
+            $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
+        }
     }
 
     $stmt->execute();
     $ocorrencias = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 } catch (PDOException $e) {
     die("Erro ao buscar ocorrências: " . $e->getMessage());
 }
@@ -53,6 +64,20 @@ try {
         <div class="titulo-pagina">
             <h2>OCORRÊNCIAS</h2>
             <div class="botoes">
+            
+            <div class="filtro-container">
+    <img src="../Imagens/filtro.png" alt="Filtrar" class="icone-filtro" id="abrirFiltro">
+    <div class="menu-filtro" id="menuFiltro">
+        <form method="GET" action="">
+            <select name="status" id="filtroStatus" onchange="this.form.submit()">
+                <option value="">Todos</option>
+                <option value="Pendente" <?= (($_GET['status'] ?? '') === 'Pendente') ? 'selected' : '' ?>>Pendente</option>
+                <option value="Em andamento" <?= (($_GET['status'] ?? '') === 'Em andamento') ? 'selected' : '' ?>>Em andamento</option>
+                <option value="Concluído" <?= (($_GET['status'] ?? '') === 'Concluído') ? 'selected' : '' ?>>Concluído</option>
+            </select>
+        </form>
+    </div>
+</div>
                 <button onclick="window.location.href='adicionar_ocorrencia.php'">ADICIONAR</button>
                 <?php if ($tipo_usuario === 'ADM'): ?>
                     <button id="btnRemover" type="button" class="btn-remover">REMOVER</button>
@@ -135,6 +160,19 @@ if (!empty($oc['imagem'])) {
 </div>
 
 <script>
+const filtroIcone = document.getElementById('abrirFiltro');
+const menuFiltro = document.getElementById('menuFiltro');
+
+filtroIcone.addEventListener('click', () => {
+    menuFiltro.classList.toggle('ativo');
+});
+
+window.addEventListener('click', (e) => {
+    if (!menuFiltro.contains(e.target) && e.target !== filtroIcone) {
+        menuFiltro.classList.remove('ativo');
+    }
+});
+
 const modal = document.getElementById('modalOcorrencia');
 const fechar = document.querySelector('.fechar');
 const btnEditar = document.getElementById('btnEditar');
@@ -144,13 +182,13 @@ function abrirModal(ocorrencia) {
     document.getElementById('modalTipo').textContent = ocorrencia.tipo;
     document.getElementById('modalStatus').textContent = ocorrencia.status;
     document.getElementById('modalDescricao').innerHTML = ocorrencia.descricao ? `<strong>Descrição:</strong><br>${ocorrencia.descricao}` : '';
-   const imgModal = document.getElementById('modalImagem');
-if (ocorrencia.imagem) {
-    imgModal.src = ocorrencia.imagem; 
-    imgModal.style.display = 'block';
-} else {
-    imgModal.style.display = 'none';
-}
+    const imgModal = document.getElementById('modalImagem');
+    if (ocorrencia.imagem) {
+        imgModal.src = ocorrencia.imagem; 
+        imgModal.style.display = 'block';
+    } else {
+        imgModal.style.display = 'none';
+    }
     btnEditar.onclick = () => window.location.href = `adicionar_ocorrencia.php?id=${ocorrencia.id}`;
     modal.style.display = 'flex';
 }
@@ -177,41 +215,6 @@ function fecharModal() {
 fechar.onclick = fecharModal;
 window.onclick = e => { if (e.target === modal) fecharModal(); };
 
-<?php if ($tipo_usuario === 'ADM'): ?>
-const btnRemover = document.getElementById('btnRemover');
-const formRemover = document.getElementById('formRemover');
-let modoRemover = false;
-
-btnRemover.addEventListener('click', () => {
-    const checkboxes = document.querySelectorAll('.checkbox-ocorrencia');
-    if (!modoRemover) {
-        modoRemover = true;
-        document.body.classList.add('remocao-ativa');
-        btnRemover.classList.add('ativo');
-        btnRemover.textContent = 'CONFIRMAR REMOÇÃO';
-        return;
-    }
-    const selecionados = Array.from(checkboxes).filter(c => c.checked);
-    if (selecionados.length === 0) {
-        alert('Selecione pelo menos uma ocorrência para remover.');
-        return;
-    }
-    if (confirm('Tem certeza que deseja excluir as ocorrências selecionadas?')) {
-        formRemover.submit();
-    }
-});
-
-document.addEventListener('change', (e) => {
-    if (e.target.classList.contains('checkbox-ocorrencia')) {
-        const algumMarcado = Array.from(document.querySelectorAll('.checkbox-ocorrencia')).some(c => c.checked);
-        if (algumMarcado) {
-            btnRemover.classList.add('ativo');
-        } else {
-            btnRemover.classList.remove('ativo');
-        }
-    }
-});
-<?php endif; ?>
 </script>
 </body>
 </html>

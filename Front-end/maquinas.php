@@ -97,7 +97,7 @@ try {
                 <?php else: ?>
                     <div class="sem-fornecedores">
                         <p>Nenhuma máquina cadastrada no momento.</p>
-                        <img src="../Imagens/nada_encontrado2.png" alt="Sem máquinas">
+                        <img src="../Imagens/nada_encontrado4.png" alt="Sem máquinas">
                     </div>
                 <?php endif; ?>
             </div>
@@ -105,7 +105,6 @@ try {
     </main>
 </div>
 
-<!-- Modal de detalhes -->
 <div id="modalMaquina" class="modal">
     <div class="modal-content">
         <span class="fechar">&times;</span>
