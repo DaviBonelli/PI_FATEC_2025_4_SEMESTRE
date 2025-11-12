@@ -9,18 +9,18 @@ $statusFiltro = $_GET['status'] ?? '';
 try {
     if ($tipo_usuario === 'ADM') {
         if (!empty($statusFiltro)) {
-            $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE status = :status ORDER BY id DESC");
+            $stmt = $pdo->prepare("SELECT o.*, m.nome AS nome_maquina FROM ocorrencias o LEFT JOIN maquinas m ON o.maquina_id = m.id WHERE o.status = :status ORDER BY o.id DESC");
             $stmt->bindValue(':status', $statusFiltro, PDO::PARAM_STR);
         } else {
-            $stmt = $pdo->prepare("SELECT * FROM ocorrencias ORDER BY id DESC");
+            $stmt = $pdo->prepare("SELECT o.*, m.nome AS nome_maquina FROM ocorrencias o LEFT JOIN maquinas m ON o.maquina_id = m.id ORDER BY o.id DESC");
         }
     } else {
         if (!empty($statusFiltro)) {
-            $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE usuario_id = :usuario_id AND status = :status ORDER BY id DESC");
+            $stmt = $pdo->prepare("SELECT o.*, m.nome AS nome_maquina FROM ocorrencias o LEFT JOIN maquinas m ON o.maquina_id = m.id WHERE o.usuario_id = :usuario_id AND o.status = :status ORDER BY o.id DESC");
             $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
             $stmt->bindValue(':status', $statusFiltro, PDO::PARAM_STR);
         } else {
-            $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE usuario_id = :usuario_id ORDER BY id DESC");
+            $stmt = $pdo->prepare("SELECT o.*, m.nome AS nome_maquina FROM ocorrencias o LEFT JOIN maquinas m ON o.maquina_id = m.id WHERE o.usuario_id = :usuario_id ORDER BY o.id DESC");
             $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
         }
     }
@@ -64,20 +64,19 @@ try {
         <div class="titulo-pagina">
             <h2>OCORRÊNCIAS</h2>
             <div class="botoes">
-            
-            <div class="filtro-container">
-    <img src="../Imagens/filtro.png" alt="Filtrar" class="icone-filtro" id="abrirFiltro">
-    <div class="menu-filtro" id="menuFiltro">
-        <form method="GET" action="">
-            <select name="status" id="filtroStatus" onchange="this.form.submit()">
-                <option value="">Todos</option>
-                <option value="Pendente" <?= (($_GET['status'] ?? '') === 'Pendente') ? 'selected' : '' ?>>Pendente</option>
-                <option value="Em andamento" <?= (($_GET['status'] ?? '') === 'Em andamento') ? 'selected' : '' ?>>Em andamento</option>
-                <option value="Concluído" <?= (($_GET['status'] ?? '') === 'Concluído') ? 'selected' : '' ?>>Concluído</option>
-            </select>
-        </form>
-    </div>
-</div>
+                <div class="filtro-container">
+                    <img src="../Imagens/filtro.png" alt="Filtrar" class="icone-filtro" id="abrirFiltro">
+                    <div class="menu-filtro" id="menuFiltro">
+                        <form method="GET" action="">
+                            <select name="status" id="filtroStatus" onchange="this.form.submit()">
+                                <option value="">Todos</option>
+                                <option value="Pendente" <?= (($_GET['status'] ?? '') === 'Pendente') ? 'selected' : '' ?>>Pendente</option>
+                                <option value="Em andamento" <?= (($_GET['status'] ?? '') === 'Em andamento') ? 'selected' : '' ?>>Em andamento</option>
+                                <option value="Concluído" <?= (($_GET['status'] ?? '') === 'Concluído') ? 'selected' : '' ?>>Concluído</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
                 <button onclick="window.location.href='adicionar_ocorrencia.php'">ADICIONAR</button>
                 <?php if ($tipo_usuario === 'ADM'): ?>
                     <button id="btnRemover" type="button" class="btn-remover">REMOVER</button>
@@ -88,49 +87,49 @@ try {
         <form id="formRemover" method="POST" action="remover_ocorrencia.php">
             <div class="lista-ocorrencias">
                 <?php if (!empty($ocorrencias)): ?>
-                   <?php foreach ($ocorrencias as $oc): ?>
-    <?php
-$imagemCaminho = '';
-if (!empty($oc['imagem'])) {
-    $imagemCaminho = str_starts_with($oc['imagem'], 'uploads/') 
-        ? $oc['imagem'] 
-        : 'uploads/' . ltrim($oc['imagem'], '/');
-}
-?>
-    <div class="ocorrencia-card">
-        <?php if ($tipo_usuario === 'ADM'): ?>
-            <input type="checkbox" name="ocorrencias[]" value="<?= $oc['id'] ?>" class="checkbox-ocorrencia">
-        <?php endif; ?>
-        <div class="info">
-            <h3><?= htmlspecialchars($oc['titulo']) ?></h3>
-            <p><strong>Tipo:</strong> <?= htmlspecialchars($oc['tipo']) ?></p>
-            <p><strong>Status:</strong> <?= htmlspecialchars($oc['status']) ?></p>
-            <?php if (!empty($oc['descricao'])): ?>
-                <div class="descricao">
-                    <strong>Descrição:</strong> 
-                    <?= nl2br(htmlspecialchars(mb_strimwidth($oc['descricao'], 0, 60, '...'))) ?>
-                </div>
-            <?php endif; ?>
-        </div>
-        <div class="acoes">
-            <a href="adicionar_ocorrencia.php?id=<?= $oc['id'] ?>">
-                <img src="../Imagens/editar.png" alt="Editar">
-            </a>
-            <br>
-            <a href="#"
-               class="ver-mais"
-               data-id="<?= $oc['id'] ?>"
-               data-titulo="<?= htmlspecialchars($oc['titulo'], ENT_QUOTES) ?>"
-               data-tipo="<?= htmlspecialchars($oc['tipo'], ENT_QUOTES) ?>"
-               data-status="<?= htmlspecialchars($oc['status'], ENT_QUOTES) ?>"
-               data-descricao="<?= htmlspecialchars($oc['descricao'] ?? '', ENT_QUOTES) ?>"
-               data-imagem="<?= htmlspecialchars($imagemCaminho, ENT_QUOTES) ?>">
-               <img src="../Imagens/visualizar.png" alt="Ver Mais">
-            </a>
-        </div>
-    </div>
-<?php endforeach; ?>
-
+                    <?php foreach ($ocorrencias as $oc): ?>
+                        <?php
+                        $imagemCaminho = '';
+                        if (!empty($oc['imagem'])) {
+                            $imagemCaminho = str_starts_with($oc['imagem'], 'uploads/') 
+                                ? $oc['imagem'] 
+                                : 'uploads/' . ltrim($oc['imagem'], '/');
+                        }
+                        ?>
+                        <div class="ocorrencia-card">
+                            <?php if ($tipo_usuario === 'ADM'): ?>
+                                <input type="checkbox" name="ocorrencias[]" value="<?= $oc['id'] ?>" class="checkbox-ocorrencia">
+                            <?php endif; ?>
+                            <div class="info">
+                                <h3><?= htmlspecialchars($oc['titulo']) ?></h3>
+                                <p><strong>Tipo:</strong> <?= htmlspecialchars($oc['tipo']) ?></p>
+                                <p><strong>Status:</strong> <?= htmlspecialchars($oc['status']) ?></p>
+                                <p><strong>Máquina:</strong> <?= htmlspecialchars($oc['nome_maquina'] ?? '—') ?></p>
+                                <?php if (!empty($oc['descricao'])): ?>
+                                    <div class="descricao">
+                                        <strong>Descrição:</strong> 
+                                        <?= nl2br(htmlspecialchars(mb_strimwidth($oc['descricao'], 0, 60, '...'))) ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="acoes">
+                                <a href="adicionar_ocorrencia.php?id=<?= $oc['id'] ?>">
+                                    <img src="../Imagens/editar.png" alt="Editar">
+                                </a>
+                                <br>
+                                <a href="#"
+                                   class="ver-mais"
+                                   data-id="<?= $oc['id'] ?>"
+                                   data-titulo="<?= htmlspecialchars($oc['titulo'], ENT_QUOTES) ?>"
+                                   data-tipo="<?= htmlspecialchars($oc['tipo'], ENT_QUOTES) ?>"
+                                   data-status="<?= htmlspecialchars($oc['status'], ENT_QUOTES) ?>"
+                                   data-descricao="<?= htmlspecialchars($oc['descricao'] ?? '', ENT_QUOTES) ?>"
+                                   data-imagem="<?= htmlspecialchars($imagemCaminho, ENT_QUOTES) ?>">
+                                   <img src="../Imagens/visualizar.png" alt="Ver Mais">
+                                </a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 <?php else: ?>
                     <div class="sem-ocorrencias">
                         <p>Nenhum resultado disponível no momento.</p>
@@ -162,21 +161,17 @@ if (!empty($oc['imagem'])) {
 <script>
 const filtroIcone = document.getElementById('abrirFiltro');
 const menuFiltro = document.getElementById('menuFiltro');
-
 filtroIcone.addEventListener('click', () => {
     menuFiltro.classList.toggle('ativo');
 });
-
 window.addEventListener('click', (e) => {
     if (!menuFiltro.contains(e.target) && e.target !== filtroIcone) {
         menuFiltro.classList.remove('ativo');
     }
 });
-
 const modal = document.getElementById('modalOcorrencia');
 const fechar = document.querySelector('.fechar');
 const btnEditar = document.getElementById('btnEditar');
-
 function abrirModal(ocorrencia) {
     document.getElementById('modalTitulo').textContent = ocorrencia.titulo;
     document.getElementById('modalTipo').textContent = ocorrencia.tipo;
@@ -192,7 +187,6 @@ function abrirModal(ocorrencia) {
     btnEditar.onclick = () => window.location.href = `adicionar_ocorrencia.php?id=${ocorrencia.id}`;
     modal.style.display = 'flex';
 }
-
 document.querySelectorAll('.acoes a.ver-mais').forEach(btn => {
     btn.addEventListener('click', e => {
         e.preventDefault();
@@ -207,14 +201,11 @@ document.querySelectorAll('.acoes a.ver-mais').forEach(btn => {
         abrirModal(ocorrencia);
     });
 });
-
 function fecharModal() {
     modal.style.display = 'none';
 }
-
 fechar.onclick = fecharModal;
 window.onclick = e => { if (e.target === modal) fecharModal(); };
-
 </script>
 </body>
 </html>

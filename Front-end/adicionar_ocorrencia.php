@@ -3,6 +3,7 @@ session_start();
 require 'bd.php';
 
 $usuario_id = $_SESSION['usuario_id'] ?? 0;
+$tipo_usuario = $_SESSION['tipo_usuario'] ?? '';
 $id = $_GET['id'] ?? null;
 $modo = $id ? 'editar' : 'adicionar';
 
@@ -11,17 +12,29 @@ $dados = [
     'tipo' => '',
     'status' => '',
     'descricao' => '',
-    'imagem' => ''
+    'imagem' => '',
+    'maquina_id' => ''
 ];
+
+try {
+    if ($tipo_usuario === 'ADM') {
+        $stmtMaquinas = $pdo->query("SELECT id, nome FROM maquinas ORDER BY nome");
+    } else {
+        $stmtMaquinas = $pdo->prepare("SELECT id, nome FROM maquinas WHERE usuario_id = :usuario_id ORDER BY nome");
+        $stmtMaquinas->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
+        $stmtMaquinas->execute();
+    }
+    $maquinas = $stmtMaquinas->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Erro ao buscar máquinas: " . $e->getMessage());
+}
 
 if ($id) {
     try {
         $stmt = $pdo->prepare("SELECT * FROM ocorrencias WHERE id = :id");
         $stmt->execute([':id' => $id]);
         $dados = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$dados) {
-            die("Ocorrência não encontrada.");
-        }
+        if (!$dados) die("Ocorrência não encontrada.");
     } catch (PDOException $e) {
         die("Erro ao buscar ocorrência: " . $e->getMessage());
     }
@@ -32,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipo = $_POST['tipo'] ?? '';
     $status = $_POST['status'] ?? '';
     $descricao = $_POST['descricao'] ?? '';
+    $maquina_id = !empty($_POST['maquina_id']) ? $_POST['maquina_id'] : null;
     $imagem = $dados['imagem'];
 
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -43,14 +57,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminhoDestino)) {
             $imagem = 'uploads/' . $nomeArquivo; 
         } else {
-            die("Erro ao fazer upload da imagem. Verifique se a pasta 'uploads' existe e tem permissão de escrita.");
+            die("Erro ao fazer upload da imagem.");
         }
     }
 
     try {
         if ($id) {
             $stmt = $pdo->prepare("UPDATE ocorrencias 
-                                   SET titulo = :titulo, tipo = :tipo, status = :status, descricao = :descricao, imagem = :imagem
+                                   SET titulo = :titulo, tipo = :tipo, status = :status, descricao = :descricao, imagem = :imagem, maquina_id = :maquina_id
                                    WHERE id = :id");
             $stmt->execute([
                 ':titulo' => $titulo,
@@ -58,13 +72,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':status' => $status,
                 ':descricao' => $descricao,
                 ':imagem' => $imagem,
+                ':maquina_id' => $maquina_id,
                 ':id' => $id
             ]);
         } else {
-            $stmt = $pdo->prepare("INSERT INTO ocorrencias (usuario_id, titulo, tipo, status, descricao, imagem) 
-                                   VALUES (:usuario_id, :titulo, :tipo, :status, :descricao, :imagem)");
+            $stmt = $pdo->prepare("INSERT INTO ocorrencias (usuario_id, maquina_id, titulo, tipo, status, descricao, imagem) 
+                                   VALUES (:usuario_id, :maquina_id, :titulo, :tipo, :status, :descricao, :imagem)");
             $stmt->execute([
                 ':usuario_id' => $usuario_id,
+                ':maquina_id' => $maquina_id,
                 ':titulo' => $titulo,
                 ':tipo' => $tipo,
                 ':status' => $status,
@@ -93,8 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <img src="../Imagens/logo_cliente.jpeg" alt="Logo Cliente" class="logo-cliente">
         <a href="index.php" class="logout-icon">
             <img src="../Imagens/icone_sair.png" alt="Sair">
-            <a href="ocorrencias.php" class="voltar-icon">
-    <img src="../Imagens/voltar.png" alt="Voltar">
+        </a>
+        <a href="ocorrencias.php" class="voltar-icon">
+            <img src="../Imagens/voltar.png" alt="Voltar">
         </a>
     </div>
 
@@ -106,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li><a href="funcionarios.php"><img src="../Imagens/func_icone.png" alt="Funcionários"> Funcionários</a></li>
                 <li><a href="maquinas.php"><img src="../Imagens/maquina_icone.png" alt="Máquinas"> Máquinas</a></li>
                 <li><a href="relatorios.php"><img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios</a></li>
-                
             </ul>
         </aside>
 
@@ -117,12 +133,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <form method="POST" enctype="multipart/form-data" class="form-ocorrencia">
                 <label for="titulo">Título da ocorrência</label>
-                <input type="text" id="titulo" name="titulo" placeholder="Digite o título" required
-                       value="<?= htmlspecialchars($dados['titulo']) ?>">
+                <input type="text" id="titulo" name="titulo" required value="<?= htmlspecialchars($dados['titulo']) ?>">
 
                 <label for="tipo">Tipo de manutenção</label>
                 <select id="tipo" name="tipo" required>
-                    <option value="" disabled <?= $dados['tipo'] == '' ? 'selected' : '' ?>>Preventiva / Corretiva</option>
+                    <option value="" disabled <?= $dados['tipo'] == '' ? 'selected' : '' ?>>Selecione</option>
                     <option value="Preventiva" <?= $dados['tipo'] == 'Preventiva' ? 'selected' : '' ?>>Preventiva</option>
                     <option value="Corretiva" <?= $dados['tipo'] == 'Corretiva' ? 'selected' : '' ?>>Corretiva</option>
                 </select>
@@ -135,8 +150,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <option value="Concluída" <?= $dados['status'] == 'Concluída' ? 'selected' : '' ?>>Concluída</option>
                 </select>
 
+                <label for="maquina_id">Máquina (opcional)</label>
+                <select id="maquina_id" name="maquina_id">
+                    <option value="">-- Nenhuma máquina selecionada --</option>
+                    <?php foreach ($maquinas as $m): ?>
+                        <option value="<?= $m['id'] ?>" <?= $dados['maquina_id'] == $m['id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($m['nome']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
                 <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao" rows="4" placeholder="Digite a descrição..."><?= htmlspecialchars($dados['descricao']) ?></textarea>
+                <textarea id="descricao" name="descricao" rows="4"><?= htmlspecialchars($dados['descricao']) ?></textarea>
 
                 <label for="imagem">Imagem (opcional)</label>
                 <input type="file" id="imagem" name="imagem" accept="image/*">
