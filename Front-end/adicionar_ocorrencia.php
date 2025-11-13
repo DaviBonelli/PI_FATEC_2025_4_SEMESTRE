@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <label for="maquina_id">Máquina (opcional)</label>
                 <select id="maquina_id" name="maquina_id">
-                    <option value="">-- Nenhuma máquina selecionada --</option>
+                    <option value="">Nenhuma máquina selecionada</option>
                     <?php foreach ($maquinas as $m): ?>
                         <option value="<?= $m['id'] ?>" <?= $dados['maquina_id'] == $m['id'] ? 'selected' : '' ?>>
                             <?= htmlspecialchars($m['nome']) ?>
