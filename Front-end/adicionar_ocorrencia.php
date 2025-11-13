@@ -76,10 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':id' => $id
             ]);
         } else {
-            $stmt = $pdo->prepare("INSERT INTO ocorrencias (usuario_id, maquina_id, titulo, tipo, status, descricao, imagem) 
-                                   VALUES (:usuario_id, :maquina_id, :titulo, :tipo, :status, :descricao, :imagem)");
+            $stmt = $pdo->prepare("INSERT INTO ocorrencias (maquina_id, titulo, tipo, status, descricao, imagem) 
+                                   VALUES (:maquina_id, :titulo, :tipo, :status, :descricao, :imagem)");
             $stmt->execute([
-                ':usuario_id' => $usuario_id,
                 ':maquina_id' => $maquina_id,
                 ':titulo' => $titulo,
                 ':tipo' => $tipo,

@@ -35,7 +35,6 @@ try {
 
     $pdo->exec("CREATE TABLE IF NOT EXISTS ocorrencias (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
     maquina_id INT NOT NULL,
     titulo VARCHAR(100) NOT NULL,
     tipo VARCHAR(50) NOT NULL,
