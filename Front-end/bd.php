@@ -34,16 +34,17 @@ try {
     }
 
     $pdo->exec("CREATE TABLE IF NOT EXISTS ocorrencias (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        usuario_id INT NOT NULL,
-        titulo VARCHAR(100) NOT NULL,
-        tipo VARCHAR(50) NOT NULL,
-        status VARCHAR(50) NOT NULL,
-        descricao TEXT,
-        imagem VARCHAR(255) NULL,
-        data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-    )");
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    maquina_id INT NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    descricao TEXT,
+    imagem VARCHAR(255) NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (maquina_id) REFERENCES maquinas(id)
+)");
 
     $pdo->exec("CREATE TABLE IF NOT EXISTS fornecedores (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -65,22 +66,22 @@ try {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
 
-    $pdo->exec("CREATE TABLE IF NOT EXISTS maquinas (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        usuario_id INT NOT NULL,
-        nome VARCHAR(100) NOT NULL,
-        codigo VARCHAR(50) NOT NULL,
-        modelo VARCHAR(100) NOT NULL,
-        fabricante VARCHAR(100) NOT NULL,
-        numero_serie VARCHAR(100) NOT NULL,
-        data_aquisicao DATE NOT NULL,
-        localizacao VARCHAR(150) NOT NULL,
-        status_maquina VARCHAR(50) NOT NULL,
-        descricao TEXT,
-        data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-    )");
+   $pdo->exec("CREATE TABLE IF NOT EXISTS maquinas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    codigo VARCHAR(50) NOT NULL,
+    modelo VARCHAR(100) NOT NULL,
+    fabricante VARCHAR(100) NOT NULL,
+    numero_serie VARCHAR(100) NOT NULL,
+    data_aquisicao DATE NOT NULL,
+    localizacao VARCHAR(150) NOT NULL,
+    status_maquina VARCHAR(50) NOT NULL,
+    descricao TEXT,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE
+)");
 
 
 } catch (PDOException $e) {

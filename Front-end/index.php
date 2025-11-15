@@ -42,7 +42,7 @@
         <div class="modal-content">
             <h3>Suporte</h3>
             <p>Entre em contato com o suporte:</p>
-            <p><strong>bluedev@gmail.com</strong></p>
+            <p><strong>suportebluedev@gmail.com</strong></p>
             <button class="close-btn" id="closeHelp">Fechar</button>
         </div>
     </div>

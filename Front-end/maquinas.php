@@ -72,7 +72,6 @@ try {
                                 <p><strong>Modelo:</strong> <?= htmlspecialchars($m['modelo']) ?></p>
                                 <p><strong>Fabricante:</strong> <?= htmlspecialchars($m['fabricante']) ?></p>
                                 <p><strong>Status:</strong> <?= htmlspecialchars($m['status_maquina']) ?></p>
-                                <p><strong>Localização:</strong> <?= htmlspecialchars($m['localizacao']) ?></p>
                             </div>
                             <div class="acoes">
                                 <a href="adicionar_maquinas.php?id=<?= $m['id'] ?>">
@@ -87,7 +86,6 @@ try {
                                    data-fabricante="<?= htmlspecialchars($m['fabricante'], ENT_QUOTES) ?>"
                                    data-numero_serie="<?= htmlspecialchars($m['numero_serie'], ENT_QUOTES) ?>"
                                    data-data_aquisicao="<?= htmlspecialchars($m['data_aquisicao'], ENT_QUOTES) ?>"
-                                   data-localizacao="<?= htmlspecialchars($m['localizacao'], ENT_QUOTES) ?>"
                                    data-status_maquina="<?= htmlspecialchars($m['status_maquina'], ENT_QUOTES) ?>"
                                    data-descricao="<?= htmlspecialchars($m['descricao'], ENT_QUOTES) ?>">
                                 </a>
@@ -114,7 +112,6 @@ try {
         <p><strong>Fabricante:</strong> <span id="modalFabricante"></span></p>
         <p><strong>Nº de Série:</strong> <span id="modalNumeroSerie"></span></p>
         <p><strong>Data de Aquisição:</strong> <span id="modalDataAquisicao"></span></p>
-        <p><strong>Localização:</strong> <span id="modalLocalizacao"></span></p>
         <p><strong>Status:</strong> <span id="modalStatus"></span></p>
         <p><strong>Descrição:</strong> <span id="modalDescricao"></span></p>
         <div class="botoes-modal">
@@ -136,7 +133,6 @@ function abrirModal(m) {
     document.getElementById('modalFabricante').textContent = m.fabricante;
     document.getElementById('modalNumeroSerie').textContent = m.numero_serie;
     document.getElementById('modalDataAquisicao').textContent = m.data_aquisicao;
-    document.getElementById('modalLocalizacao').textContent = m.localizacao;
     document.getElementById('modalStatus').textContent = m.status_maquina;
     document.getElementById('modalDescricao').textContent = m.descricao;
     btnEditar.onclick = () => window.location.href = `adicionar_maquinas.php?id=${m.id}`;
@@ -158,7 +154,6 @@ document.querySelectorAll('.acoes a.ver-mais').forEach(btn => {
             fabricante: btn.dataset.fabricante,
             numero_serie: btn.dataset.numero_serie,
             data_aquisicao: btn.dataset.data_aquisicao,
-            localizacao: btn.dataset.localizacao,
             status_maquina: btn.dataset.status_maquina,
             descricao: btn.dataset.descricao
         };

@@ -91,9 +91,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <img src="../Imagens/logo_cliente.jpeg" alt="Logo Cliente" class="logo-cliente">
         <a href="index.php" class="logout-icon">
             <img src="../Imagens/icone_sair.png" alt="Sair">
-            <a href="fornecedores.php" class="voltar-icon">
-    <img src="../Imagens/voltar.png" alt="Voltar">
-</a>
+        </a>
+        <a href="fornecedores.php" class="voltar-icon">
+            <img src="../Imagens/voltar.png" alt="Voltar">
+        </a>
     </div>
 
     <div class="container">
@@ -113,13 +114,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <form method="POST" class="form-fornecedor">
+                <label for="cnpj">CNPJ</label>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0001-00" required
+                           value="<?= htmlspecialchars($dados['cnpj']) ?>" style="flex:1;">
+                    <button type="button" onclick="buscarCNPJ()" style="padding:6px 10px;">Buscar Dados</button>
+                </div>
+
                 <label for="nome">Nome da empresa</label>
                 <input type="text" id="nome" name="nome" placeholder="Digite o nome da empresa" required
                        value="<?= htmlspecialchars($dados['nome']) ?>">
-
-                <label for="cnpj">CNPJ</label>
-                <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0001-00" required
-                       value="<?= htmlspecialchars($dados['cnpj']) ?>">
 
                 <label for="categoria">Categoria</label>
                 <input type="text" id="categoria" name="categoria" placeholder="Digite a categoria" required
@@ -137,5 +141,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </main>
     </div>
+
+    <script>
+    async function buscarCNPJ() {
+        const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+        if (cnpj.length !== 14) {
+            alert("Digite um CNPJ válido com 14 números.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+            if (!response.ok) throw new Error('CNPJ não encontrado');
+
+            const data = await response.json();
+            console.log(data);
+
+            document.getElementById('nome').value = data.razao_social || '';
+            document.getElementById('telefone').value = data.ddd_telefone_1 || '';
+            document.getElementById('endereco').value = 
+                `${data.logradouro || ''}, ${data.numero || ''} - ${data.bairro || ''}, ${data.municipio || ''} - ${data.uf}`;
+
+        } catch (error) {
+            console.error(error);
+            alert("Erro ao buscar dados do CNPJ. Verifique o número e tente novamente.");
+        }
+    }
+
+    document.getElementById('cnpj').addEventListener('blur', buscarCNPJ);
+    </script>
 </body>
 </html>
