@@ -171,7 +171,7 @@ try {
         </div>
 
         <div class="botoes-modal">
-            <button id="btnEditar">Editar</button>
+            <button id="btnEditar" class="btn-editar">Editar</button>
             <button class="btn-fechar" onclick="fecharModal()">Fechar</button>
         </div>
     </div>
