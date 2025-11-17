@@ -41,6 +41,7 @@ if ($id) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $titulo = $_POST['titulo'] ?? '';
     $tipo = $_POST['tipo'] ?? '';
     $status = $_POST['status'] ?? '';
@@ -51,11 +52,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] !== UPLOAD_ERR_NO_FILE) {
         $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
         $nomeArquivo = uniqid('img_') . '.' . strtolower($extensao);
-        $diretorioUploads = __DIR__ . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
+
+        $diretorioUploads = __DIR__ . '/uploads/';
         if (!is_dir($diretorioUploads)) mkdir($diretorioUploads, 0755, true);
+
         $caminhoDestino = $diretorioUploads . $nomeArquivo;
+
         if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminhoDestino)) {
-            $imagem = 'uploads/' . $nomeArquivo; 
+            $imagem = 'uploads/' . $nomeArquivo;
         } else {
             die("Erro ao fazer upload da imagem.");
         }
@@ -63,29 +67,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if ($id) {
-            $stmt = $pdo->prepare("INSERT INTO ocorrencias 
-    (maquina_id, titulo, tipo, status, descricao, imagem, usuario_id) 
-    VALUES 
-    (:maquina_id, :titulo, :tipo, :status, :descricao, :imagem, :usuario_id)");
+            $stmt = $pdo->prepare("
+                UPDATE ocorrencias 
+                SET maquina_id = :maquina_id,
+                    titulo = :titulo,
+                    tipo = :tipo,
+                    status = :status,
+                    descricao = :descricao,
+                    imagem = :imagem
+                WHERE id = :id
+            ");
 
-$stmt = $pdo->prepare("
-    INSERT INTO ocorrencias 
-    (maquina_id, titulo, tipo, status, descricao, imagem, usuario_id) 
-    VALUES 
-    (:maquina_id, :titulo, :tipo, :status, :descricao, :imagem, :usuario_id)
-");
+            $stmt->execute([
+                ':maquina_id' => $maquina_id,
+                ':titulo' => $titulo,
+                ':tipo' => $tipo,
+                ':status' => $status,
+                ':descricao' => $descricao,
+                ':imagem' => $imagem,
+                ':id' => $id
+            ]);
+        } else {
+            $stmt = $pdo->prepare("
+                INSERT INTO ocorrencias 
+                (maquina_id, titulo, tipo, status, descricao, imagem, usuario_id)
+                VALUES (:maquina_id, :titulo, :tipo, :status, :descricao, :imagem, :usuario_id)
+            ");
 
-$stmt->execute([
-    ':maquina_id' => $maquina_id,
-    ':titulo' => $titulo,
-    ':tipo' => $tipo,
-    ':status' => $status,
-    ':descricao' => $descricao,
-    ':imagem' => $imagem,
-    ':usuario_id' => $usuario_id
-]);
-
+            $stmt->execute([
+                ':maquina_id' => $maquina_id,
+                ':titulo' => $titulo,
+                ':tipo' => $tipo,
+                ':status' => $status,
+                ':descricao' => $descricao,
+                ':imagem' => $imagem,
+                ':usuario_id' => $usuario_id
+            ]);
         }
+
         header('Location: ocorrencias.php');
         exit();
     } catch (PDOException $e) {
@@ -114,15 +133,18 @@ $stmt->execute([
     </div>
 
     <div class="container">
-        <aside class="sidebar">
-            <ul>
-                <li><a href="ocorrencias.php"><img src="../Imagens/ocorrencia_icone.png" alt="Ocorrências"> Ocorrências</a></li>
-                <li><a href="fornecedores.php"><img src="../Imagens/fornecedor_icone.png" alt="Fornecedores"> Fornecedores</a></li>
-                <li><a href="funcionarios.php"><img src="../Imagens/func_icone.png" alt="Funcionários"> Funcionários</a></li>
-                <li><a href="maquinas.php"><img src="../Imagens/maquina_icone.png" alt="Máquinas"> Máquinas</a></li>
-                <li><a href="relatorios.php"><img src="../Imagens/relatorio_icone.png" alt="Relatórios"> Relatórios</a></li>
-            </ul>
-        </aside>
+    <aside class="sidebar">
+        <ul>
+            <li><a href="ocorrencias.php"><img src="../Imagens/ocorrencia_icone.png"> Ocorrências</a></li>
+            <?php if ($tipo_usuario === 'ADM'): ?>
+                <li><a href="fornecedores.php"><img src="../Imagens/fornecedor_icone.png"> Fornecedores</a></li>
+                <li><a href="funcionarios.php"><img src="../Imagens/func_icone.png"> Funcionários</a></li>
+                <li><a href="maquinas.php"><img src="../Imagens/maquina_icone.png"> Máquinas</a></li>
+            <?php endif; ?>
+            <li><a href="relatorios.php"><img src="../Imagens/relatorio_icone.png"> Relatórios</a></li>
+        </ul>
+    </aside>
+
 
         <main class="main-content">
             <div class="titulo-pagina">
