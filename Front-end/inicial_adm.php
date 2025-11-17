@@ -1,8 +1,11 @@
 <?php
 session_start();
-$_SESSION['usuario_id'] = 1;
 
-require 'bd.php'; 
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>

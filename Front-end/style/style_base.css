@@ -201,6 +201,7 @@ body {
     background-color: #a00000 !important;
 }
 
+
 /* ============================
    LISTAS (Ocorrência / Fornecedor)
 ============================ */
@@ -927,3 +928,5 @@ body.modo-remover .checkbox-funcionario {
     border: 1px solid #ccc;
     cursor: pointer;
 }
+
+
