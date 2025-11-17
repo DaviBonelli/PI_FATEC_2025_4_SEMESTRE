@@ -63,29 +63,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if ($id) {
-            $stmt = $pdo->prepare("UPDATE ocorrencias 
-                                   SET titulo = :titulo, tipo = :tipo, status = :status, descricao = :descricao, imagem = :imagem, maquina_id = :maquina_id
-                                   WHERE id = :id");
-            $stmt->execute([
-                ':titulo' => $titulo,
-                ':tipo' => $tipo,
-                ':status' => $status,
-                ':descricao' => $descricao,
-                ':imagem' => $imagem,
-                ':maquina_id' => $maquina_id,
-                ':id' => $id
-            ]);
-        } else {
-            $stmt = $pdo->prepare("INSERT INTO ocorrencias (maquina_id, titulo, tipo, status, descricao, imagem) 
-                                   VALUES (:maquina_id, :titulo, :tipo, :status, :descricao, :imagem)");
-            $stmt->execute([
-                ':maquina_id' => $maquina_id,
-                ':titulo' => $titulo,
-                ':tipo' => $tipo,
-                ':status' => $status,
-                ':descricao' => $descricao,
-                ':imagem' => $imagem
-            ]);
+            $stmt = $pdo->prepare("INSERT INTO ocorrencias 
+    (maquina_id, titulo, tipo, status, descricao, imagem, usuario_id) 
+    VALUES 
+    (:maquina_id, :titulo, :tipo, :status, :descricao, :imagem, :usuario_id)");
+
+$stmt = $pdo->prepare("
+    INSERT INTO ocorrencias 
+    (maquina_id, titulo, tipo, status, descricao, imagem, usuario_id) 
+    VALUES 
+    (:maquina_id, :titulo, :tipo, :status, :descricao, :imagem, :usuario_id)
+");
+
+$stmt->execute([
+    ':maquina_id' => $maquina_id,
+    ':titulo' => $titulo,
+    ':tipo' => $tipo,
+    ':status' => $status,
+    ':descricao' => $descricao,
+    ':imagem' => $imagem,
+    ':usuario_id' => $usuario_id
+]);
+
         }
         header('Location: ocorrencias.php');
         exit();
