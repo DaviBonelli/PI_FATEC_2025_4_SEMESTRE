@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$usuario_id = $_SESSION['usuario_id'];
+$tipo_usuario = $_SESSION['tipo_usuario'] ?? '';
+require 'bd.php';
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
